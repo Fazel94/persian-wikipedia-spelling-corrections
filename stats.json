@@ -1,0 +1,11 @@
+{
+ "edits": 349350,
+ "pairs": 148725,
+ "pairs_by_kind": {
+  "word": 140911,
+  "zwnj": 7814
+ },
+ "pairs_high": 12915,
+ "pairs_high_test": 1289,
+ "article_tokens": 252297227
+}

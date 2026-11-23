@@ -212,11 +212,19 @@ On an 8-core machine the download took about 20 minutes and the scan a little ov
 
 ## Citation
 
+If you use this dataset, please cite it with its DOI,
+[10.57967/hf/11806](https://doi.org/10.57967/hf/11806):
+
 ```bibtex
 @misc{fazeli2026persianwikispelling,
-  author = {Fazeli, Kiyarash},
-  title  = {Persian (Farsi) Wikipedia Spelling Corrections},
-  year   = {2026},
-  url    = {https://huggingface.co/datasets/Phazel/persian-wikipedia-spelling-corrections}
+  author    = {Fazeli, Kiyarash},
+  title     = {Persian (Farsi) Wikipedia Spelling Corrections},
+  year      = {2026},
+  publisher = {Hugging Face},
+  doi       = {10.57967/hf/11806},
+  url       = {https://huggingface.co/datasets/Phazel/persian-wikipedia-spelling-corrections}
 }
 ```
+
+Kiyarash Fazeli. 2026. Persian (Farsi) Wikipedia Spelling Corrections. Hugging Face.
+https://doi.org/10.57967/hf/11806

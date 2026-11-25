@@ -97,7 +97,8 @@ Shown as JSON; the file is gzipped TSV with these columns.
   "kind": "word",
   "confidence": "high",
   "error_type": "non_word",
-  "p_spelling": null
+  "p_spelling": null,
+  "sonnet_label": null
 }
 ```
 
@@ -114,6 +115,9 @@ Shown as JSON; the file is gzipped TSV with these columns.
   real-word spelling error in its sentence (see [Real-word errors in context](#real-word-errors-in-context)).
   Empty for other error types and for the 5% of `context_dependent` edits whose word could not
   be located in its sentence.
+* `sonnet_label`: for the same edits, the label Claude Sonnet 5.5 gave from the sentence: one of
+  `spelling`, `variant`, `grammar`, `style`, `content`, `name` (see
+  [Real-word errors in context](#real-word-errors-in-context)).
 
 ### Columns in `pairs`
 
@@ -234,6 +238,25 @@ range and labelled by a native Persian speaker (7 skipped as unclear):
 Most false positives are style edits, name transliterations and spelling variants. Most
 misses are slips the language model rates poorly, such as `تلفن → تلفظ` and `منتصب → منتسب`.
 
+`sonnet_label` is a second, independent judgement of the same edits. Claude Sonnet 5.5
+(`claude-sonnet-5-5`, adaptive extended thinking at effort `high`) labelled every scored edit
+on 2026-11-25 with the six labels above, 50 edits per request, from a window of 80 characters
+on each side of the changed word; the prompt is `annotation/llm_guideline_v3.txt` in the code
+repository. On the 143 test edits (an earlier run of the same prompt), Sonnet's `spelling` had
+a precision of 87% (75% to 93%) and a recall of 72% (60% to 81%), and it agreed with the human
+annotator at Cohen's κ = 0.60 over the six labels. Two runs of the same prompt gave the same
+label for 89% of edits.
+
+| over all 72,567 scored edits | edits |
+|---|---:|
+| `p_spelling ≥ 0.5` | 25,880 |
+| `sonnet_label = spelling` | 21,883 |
+| both | 17,094 |
+
+Where both agree is the most reliable subset: 90% precision (77% to 96%) on the test edits,
+with 58% recall. This combination was chosen after looking at the test results, so treat
+that figure as indicative.
+
 ## Validation
 
 200 `high` pairs were drawn at random (seed 0) from the previous build of this dataset, which
@@ -301,12 +324,13 @@ On an 8-core machine the download took about 20 minutes and the scan a little ov
 ```sh
 python -m fadict.context score      # BERT scores of context_dependent edits
 python -m fadict.context classify   # frozen annotation/context_classifier.json → p_spelling
-python -m fadict.context annotate   # adds p_spelling to dist/fawiki_typos/edits/
+python -m fadict.context annotate   # adds p_spelling and sonnet_label to dist/fawiki_typos/edits/
 ```
 
 The hand labels behind the classifier are in `annotation/context_labels_dev.tsv` (299 edits,
 used to fit it) and `annotation/context_labels_test.tsv` (150 edits, used only to test it,
-with Claude Sonnet 5.5's labels alongside).
+with Claude Sonnet 5.5's labels alongside); Sonnet's labels of all scored edits are in
+`annotation/context_sonnet_labels.tsv`.
 
 ## Citation
 

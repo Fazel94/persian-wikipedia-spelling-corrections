@@ -17,7 +17,7 @@ spelling error. It was fitted on the dev labels (`sample`, labelled in Prodigy) 
     python -m fadict.context sample [N]        # dev sheet, 300
     python -m fadict.context fit               # dev labels → annotation/context_classifier.json
     python -m fadict.context classify          # → data/work/context_pred.tsv
-    python -m fadict.context annotate          # p_spelling → dist/fawiki_typos/edits/*.tsv.gz
+    python -m fadict.context annotate          # p_spelling, sonnet_label → dist/fawiki_typos/edits/
     python -m fadict.context test-sample [N]   # test sheet, 150, excludes the dev sheet
 
 Uses CUDA when available. CPU scores about 6 contexts/s on 16 shared cores, a Colab T4 about
@@ -53,6 +53,8 @@ TEST = Path("data/work/context_test.tsv")  # drawn after the classifier was froz
 LABELS = Path("data/work/context_labels.jsonl")  # Prodigy `db-out` of the dev labels
 CLASSIFIER = Path("annotation/context_classifier.json")
 PREDICTIONS = Path("data/work/context_pred.tsv")
+# Claude Sonnet 5.5 labels of every scored edit (guideline v3, batches of 50); see the dataset card.
+LLM_LABELS = Path("annotation/context_sonnet_labels.tsv")
 THRESHOLD = 0.5  # fixed before the test set was labelled
 WINDOW = 32  # word pieces kept on each side of the masked word
 BATCH = 64
@@ -218,30 +220,35 @@ def classify() -> None:
 
 
 def annotate() -> None:
-    """Add `p_spelling` from `PREDICTIONS` to the released `EDITS` files, in place. Empty for
-    edits that were not scored: other error types, and the 5% whose word could not be found
-    in its sentence. Safe to rerun."""
-    with PREDICTIONS.open(encoding="utf-8", newline="") as f:
-        p = {(r["rev_id"], r["wrong"], r["right"]): r["p_spelling"] for r in csv.DictReader(f, delimiter="\t")}
+    """Add `p_spelling` (from `PREDICTIONS`) and `sonnet_label` (from `LLM_LABELS`) to the
+    released `EDITS` files, in place. Both are empty for edits that were not scored: other error
+    types, and the 5% whose word could not be found in its sentence. Safe to rerun."""
+    def load(path: Path, column: str) -> dict:
+        with path.open(encoding="utf-8", newline="") as f:
+            return {(r["rev_id"], r["wrong"], r["right"]): r[column] for r in csv.DictReader(f, delimiter="\t")}
+
+    added = {"p_spelling": load(PREDICTIONS, "p_spelling"), "sonnet_label": load(LLM_LABELS, "sonnet_v3")}
     csv.field_size_limit(sys.maxsize)
     for path in sorted(EDITS.glob("*.tsv.gz")):
         tmp = path.with_suffix(".tmp")
-        n = hit = 0
+        n, hits = 0, dict.fromkeys(added, 0)
         with gzip.open(path, "rt", encoding="utf-8", newline="") as src, \
                 gzip.open(tmp, "wt", encoding="utf-8", newline="") as dst:
             rows = csv.reader(src, delimiter="\t")
             out = csv.writer(dst, delimiter="\t", lineterminator="\n")
             header = next(rows)
-            keep = header.index("p_spelling") if "p_spelling" in header else len(header)
-            out.writerow([*header[:keep], "p_spelling"])
+            keep = min([header.index(c) for c in added if c in header], default=len(header))
+            out.writerow([*header[:keep], *added])
             col = {c: i for i, c in enumerate(header)}
             for row in rows:
-                v = p.get((row[col["rev_id"]], row[col["wrong"]], row[col["right"]]), "")
-                out.writerow([*row[:keep], v])
+                key = (row[col["rev_id"]], row[col["wrong"]], row[col["right"]])
+                values = [values_of.get(key, "") for values_of in added.values()]
+                out.writerow([*row[:keep], *values])
                 n += 1
-                hit += v != ""
+                for c, v in zip(added, values):
+                    hits[c] += v != ""
         tmp.replace(path)
-        print(f"{path}: {hit:,} of {n:,} edits have p_spelling", file=sys.stderr)
+        print(f"{path}: {n:,} edits; " + ", ".join(f"{h:,} with {c}" for c, h in hits.items()), file=sys.stderr)
 
 
 def sample(n: int, out_path: Path = SAMPLE, seed: int = 0, exclude: Path | None = None) -> None:

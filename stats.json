@@ -6,8 +6,8 @@
   "zwnj": 9647
  },
  "pairs_by_error_type": {
-  "variant": 2730,
-  "context_dependent": 28229,
+  "variant": 728,
+  "context_dependent": 30231,
   "spacing": 8569,
   "disputed": 19347,
   "non_word": 66762,
@@ -15,8 +15,8 @@
  },
  "edits_by_error_type": {
   "non_word": 110868,
-  "variant": 22946,
-  "context_dependent": 82402,
+  "variant": 18245,
+  "context_dependent": 87103,
   "spacing": 29151,
   "disputed": 63072,
   "unverified": 36879

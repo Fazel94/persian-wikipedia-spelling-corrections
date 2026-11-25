@@ -193,22 +193,24 @@ means editors have all but replaced one with the other. The first rule that matc
 | `disputed` | `reverse_edits` is at least half of `edits`: editors disagree | `او ↔ وی`, `از ↔ در`, `وبگاه ↔ وب‌گاه` | 19,347 | 63,072 |
 | `spacing` | `kind` is `zwnj` | `میشود → می‌شود` | 8,569 | 29,151 |
 | `unverified` | the fix has no evidence either (rare, in no lexicon) | names, transliterations | 31,095 | 36,879 |
-| `variant` | the old form is a word, and either differs from the fix only in hamza seat or a joined `به` (`orthographic`), or a curated lexicon lists it and it is displaced | `موثر → مؤثر`, `بطور → به‌طور`, `اطاق → اتاق`, `برعلیه → علیه` | 2,730 | 22,946 |
-| `context_dependent` | the old form is a word and not displaced | `آن → آنها`, `هست → است`, `دو → سه` | 28,229 | 82,402 |
+| `variant` | the old form is a word and differs from the fix only in hamza seat or a joined `به` (`orthographic`) | `موثر → مؤثر`, `بطور → به‌طور` | 728 | 18,245 |
+| `context_dependent` | the old form is a word, so only the sentence can tell | `آن → آنها`, `جهن → جهان`, `اطاق → اتاق`, `دو → سه` | 30,231 | 87,103 |
 | `non_word` | the old form is in no lexicon, or only weak evidence accepts it and it is displaced | `برگذار → برگزار`, `گدرگاه → گذرگاه` | 66,762 | 110,868 |
 
 `non_word` pairs are spelling errors in any sentence. `variant` pairs replace a dispreferred
-but listed form of the same word: older spellings, hamza and joining conventions, and usage
-such as the redundant `بر` in `برعلیه`. Whether to count them as spelling depends on the use.
-The `orthographic` test folds `أ`, `إ` to `ا`, `ؤ` to `و`, `ئ` to `ی` or nothing, drops `ء`
-and ZWNJ, and accepts `ب` joined to the next word for `به‌`. It applies only when the old form
-is a word; a non-word such as `هئیت → هیئت` stays `non_word`. Dropping `ء` also merges a few
-distinct words, such as `جز → جزء` (37 edits).
+but accepted spelling of the same word, by hamza or joining convention. Whether to count them as
+spelling depends on the use. The `orthographic` test folds `أ`, `إ` to `ا`, `ؤ` to `و`, `ئ` to
+`ی` or nothing, drops `ء` and ZWNJ, and accepts `ب` joined to the next word for `به‌`. It applies
+only when the old form is a word; a non-word such as `هئیت → هیئت` stays `non_word`. Dropping `ء`
+also merges a few distinct words, such as `جز → جزء` (37 edits).
 
-`context_dependent` pairs mix real-word spelling errors (`بله → بلخ`) with grammar, style and
-content edits. Only the sentence can tell these apart, so they are not counted as spelling
-fixes; `p_spelling` in the `edits` config judges them one by one. Of the `high` pairs, 12,156
-are `non_word`, 631 `variant` and 195 `unverified`.
+`context_dependent` pairs mix real-word spelling errors (`بله → بلخ`, `جهن → جهان`) with
+variant, grammar, style and content edits. Only the sentence can tell these apart, so they are
+not counted as spelling fixes; `p_spelling` and `sonnet_label` in the `edits` config judge them
+one by one. This includes pairs whose old form is a rare listed word that editors have replaced:
+an earlier version called those `variant`, but in a hand-checked sample 21 of 34 were real-word
+typos where the old form happens to be a word (`انجم → انجمن`, `قیل → فیل`). Of the `high`
+pairs, 12,156 are `non_word`, 578 `context_dependent`, 53 `variant` and 195 `unverified`.
 
 ### Real-word errors in context
 
@@ -227,7 +229,9 @@ makes no sense there and is a key, dot or sound away from the new one: `زیان
 (`بودند → شدند`) and `name` (another transliteration: `مارچ → مارس`).
 
 The frozen classifier was then tested on 150 new edits, drawn at random across the score
-range and labelled by a native Persian speaker (7 skipped as unclear):
+range and labelled by a native Persian speaker (7 skipped as unclear). These were drawn before
+the pairs that an earlier version called `variant` moved into `context_dependent` (about 5% of
+its edits now):
 
 | | value | Wilson 95% interval |
 |---|---:|---|
@@ -247,11 +251,14 @@ a precision of 87% (75% to 93%) and a recall of 72% (60% to 81%), and it agreed 
 annotator at Cohen's κ = 0.60 over the six labels. Two runs of the same prompt gave the same
 label for 89% of edits.
 
-| over all 72,567 scored edits | edits |
+| over all 76,759 scored edits | edits |
 |---|---:|
-| `p_spelling ≥ 0.5` | 25,880 |
-| `sonnet_label = spelling` | 21,883 |
-| both | 17,094 |
+| `p_spelling ≥ 0.5` | 28,409 |
+| `sonnet_label = spelling` | 23,994 |
+| both | 18,849 |
+
+Of the 4,192 edits that moved in from the old `variant` rule, Sonnet labels 50% `spelling` and
+17% `variant`.
 
 Where both agree is the most reliable subset: 90% precision (77% to 96%) on the test edits,
 with 58% recall. This combination was chosen after looking at the test results, so treat

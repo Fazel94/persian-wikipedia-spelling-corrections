@@ -19,6 +19,8 @@ spelling error. It was fitted on the dev labels (`sample`, labelled in Prodigy) 
     python -m fadict.context classify          # → data/work/context_pred.tsv
     python -m fadict.context annotate          # p_spelling, sonnet_label → dist/fawiki_typos/edits/
     python -m fadict.context test-sample [N]   # test sheet, 150, excludes the dev sheet
+    python -m fadict.context stage1-sample     # stage 1 validation sheet, 250 pairs
+    python -m fadict.context variant-sample    # 50 `variant` pairs after the rule fix
 
 Uses CUDA when available. CPU scores about 6 contexts/s on 16 shared cores, a Colab T4 about
 220/s, so the 72k contexts of a full release take about 6 minutes there:
@@ -50,6 +52,12 @@ EDITS = Path("dist/fawiki_typos/edits")
 SCORES = Path("data/work/context_scores.tsv")
 SAMPLE = Path("data/work/context_sample.tsv")  # dev: features and guideline were tuned on it
 TEST = Path("data/work/context_test.tsv")  # drawn after the classifier was frozen
+STAGE1 = Path("data/work/stage1_sample.tsv")
+# Pairs per stage 1 class for measuring its precision. `non_word` is drawn from the `low` tier
+# only: the `high` tier was checked on 200 pairs. `context_dependent` has its own test sheet;
+# `spacing` is mechanical.
+STAGE1_SIZES = {"non_word": 100, "variant": 50, "unverified": 50, "disputed": 50}
+VARIANT_SAMPLE = Path("data/work/stage1_variant.tsv")  # `variant` re-checked after the rule fix
 LABELS = Path("data/work/context_labels.jsonl")  # Prodigy `db-out` of the dev labels
 CLASSIFIER = Path("annotation/context_classifier.json")
 PREDICTIONS = Path("data/work/context_pred.tsv")
@@ -291,6 +299,38 @@ def sample(n: int, out_path: Path = SAMPLE, seed: int = 0, exclude: Path | None 
     print(f"{len(picked)} edits → {out_path}", file=sys.stderr)
 
 
+def stage1_sample(sizes: dict[str, int] = STAGE1_SIZES, out_path: Path = STAGE1, seed: int = 2,
+                  exclude: Path | None = None) -> None:
+    """Write `out_path`: pairs drawn at random from each class in `sizes`, each with the first of
+    its edits whose changed word can be located in the sentence. Pairs in `exclude` (an earlier
+    sheet) are skipped. The `error_type` column is for analysis; `context_recipe.py` does not
+    show it to annotators."""
+    skip = set()
+    if exclude:
+        with exclude.open(encoding="utf-8", newline="") as f:
+            skip = {(r["wrong"], r["right"]) for r in csv.DictReader(f, delimiter="\t")}
+    first: dict[tuple[str, str], dict] = {}
+    for row in edits(set(sizes)):
+        key = (row["wrong"], row["right"])
+        if key in first or key in skip or (row["error_type"] == "non_word" and row["confidence"] != "low"):
+            continue
+        if slot(row["before"], row["after"], row["wrong"], row["right"]):
+            first[key] = row
+    rng = random.Random(seed)
+    picked = []
+    for kind, n in sizes.items():
+        pool = sorted(k for k, r in first.items() if r["error_type"] == kind)
+        picked += [first[k] for k in rng.sample(pool, n)]
+    rng.shuffle(picked)
+    with out_path.open("w", encoding="utf-8", newline="") as f:
+        out = csv.writer(f, delimiter="\t", lineterminator="\n")
+        out.writerow(["rev_id", "wrong", "right", "before", "after", "diff_url", "label", "error_type"])
+        for r in picked:
+            url = f"https://fa.wikipedia.org/w/index.php?diff={r['rev_id']}"
+            out.writerow([r["rev_id"], r["wrong"], r["right"], r["before"], r["after"], url, "", r["error_type"]])
+    print(f"{len(picked)} pairs → {out_path}", file=sys.stderr)
+
+
 def main(argv: list[str]) -> int:
     if argv[:1] == ["score"]:
         limit = int(argv[argv.index("--limit") + 1]) if "--limit" in argv else None
@@ -300,6 +340,10 @@ def main(argv: list[str]) -> int:
         sample(int(argv[1]) if len(argv) > 1 else 300)
     elif argv[:1] == ["test-sample"]:
         sample(int(argv[1]) if len(argv) > 1 else 150, TEST, seed=1, exclude=SAMPLE)
+    elif argv[:1] == ["stage1-sample"]:
+        stage1_sample()
+    elif argv[:1] == ["variant-sample"]:
+        stage1_sample({"variant": 50}, VARIANT_SAMPLE, seed=3, exclude=STAGE1)
     elif argv[:1] == ["fit"]:
         fit()
     elif argv[:1] == ["classify"]:

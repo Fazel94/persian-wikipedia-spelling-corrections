@@ -261,11 +261,12 @@ def error_type(p: dict, curated: set[str], weak: set[str]) -> str:
     - `disputed`: editors change it back at least half as often (`او ↔ وی`, `وبگاه ↔ وب‌گاه`);
     - `spacing`: only the half-space differs;
     - `unverified`: the fix is in no lexicon and rare (names, transliterations);
-    - `variant`: the old form is a listed word but a dispreferred spelling or usage of the same
-      word: either `orthographic` (`موسسه → مؤسسه`, `بطور → به‌طور`), or listed by a curated
-      lexicon and `displaced` (`اطاق → اتاق`, `برعلیه → علیه`);
-    - `context_dependent`: both are words in common use, so only the sentence can tell a
-      real-word error from a grammar, style or content edit (`آن → آنها`, `از → در`, `دو → سه`);
+    - `variant`: the old form is a word and differs from the fix only by an `orthographic`
+      convention (`موسسه → مؤسسه`, `بطور → به‌طور`);
+    - `context_dependent`: both are words, so only the sentence can tell a real-word error
+      (`جهن → جهان`) from a variant, grammar, style or content edit (`اطاق → اتاق`,
+      `آن → آنها`, `دو → سه`). A rare listed word that editors have displaced stays here: in a
+      hand-checked sample most such pairs were real-word typos, not variants;
     - `non_word`: the old form is in no lexicon, or only a weak one and `displaced`.
     A non-word stays `non_word` even when `orthographic`: `هئیت → هیئت` is a typo."""
     if p["reverse_edits"] >= DISPUTED_SHARE * p["edits"]:
@@ -275,12 +276,9 @@ def error_type(p: dict, curated: set[str], weak: set[str]) -> str:
     if p["right"] not in curated and p["right"] not in weak:
         return "unverified"
     w = p["wrong"]
-    is_word = w in curated or (w in weak and not displaced(p))
-    if is_word and orthographic(w, p["right"]):
-        return "variant"
-    if w in curated:
-        return "variant" if displaced(p) else "context_dependent"
-    return "context_dependent" if is_word else "non_word"
+    if not (w in curated or (w in weak and not displaced(p))):
+        return "non_word"
+    return "variant" if orthographic(w, p["right"]) else "context_dependent"
 
 
 def rows(paths: list[Path]):

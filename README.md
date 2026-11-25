@@ -275,10 +275,27 @@ build. 197 were spelling fixes, a precision of
 (`سپیدپوستان → سفیدپوستان`), and a name split by mistake (`کیی → کی`, from `بان کی مون`).
 The labels are in `validation_sample.tsv`, with a link to each diff.
 
-There was one annotator, so no agreement score is available, and the precision of the `low`
-pairs was not measured. For the 150 test edits of `p_spelling`, Claude Sonnet 5.5 labelled
-the same edits with the same guideline; its agreement with the human annotator is Cohen's
-κ = 0.60 over the six labels and κ = 0.64 for spelling against the rest.
+The other classes were checked on fresh random samples drawn after the rules were fixed, one
+edit per pair, labelled by the same annotator with the six labels of
+[Real-word errors in context](#real-word-errors-in-context) (unclear pairs skipped):
+
+| class | pairs labelled | what was checked | result | Wilson 95% interval |
+|---|---:|---|---:|---|
+| `non_word`, `low` tier | 96 | fixes a spelling error | 82% | 73% to 89% |
+| `variant` | 50 | not a spelling error (variant or name) | 100% | 93% to 100% |
+| `variant` | 50 | the label is `variant` (5 were names) | 90% | 79% to 96% |
+| `unverified` | 37 | a name or transliteration | 70% | 54% to 83% |
+| `disputed` | 41 | fixes a spelling error | 34% | 22% to 49% |
+
+Most `non_word` misses are name transliterations, plus a few ezafe removals (`بقیه‌ی → بقیه`).
+`disputed` pairs are not reliably non-errors: a third fix real typos that someone reverted, so
+treat the class as uncertain. The `variant` sample replaced an earlier check of a broader rule
+(24% precision), which led to the narrower rule described in [Error type](#error-type).
+
+There was one annotator, so no human agreement score is available. Claude Sonnet 5.5 labelled
+the same samples with the same guideline; its agreement with the human annotator is Cohen's
+κ = 0.60 over the six labels on the 150 `p_spelling` test edits (0.64 for spelling against the
+rest), and κ = 0.59 on the stage 1 samples above.
 
 ## Limitations
 

@@ -339,7 +339,7 @@ If you use this dataset, please cite it with its DOI,
 
 ```bibtex
 @misc{fazeli2026persianwikispelling,
-  author    = {Fazeli, Kiyarash},
+  author    = {Fazeli, Mohammad},
   title     = {Persian (Farsi) Wikipedia Spelling Corrections},
   year      = {2026},
   publisher = {Hugging Face},
@@ -348,5 +348,5 @@ If you use this dataset, please cite it with its DOI,
 }
 ```
 
-Kiyarash Fazeli. 2026. Persian (Farsi) Wikipedia Spelling Corrections. Hugging Face.
+Mohammad Fazeli. 2026. Persian (Farsi) Wikipedia Spelling Corrections. Hugging Face.
 https://doi.org/10.57967/hf/11806

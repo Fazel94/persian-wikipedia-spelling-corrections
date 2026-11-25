@@ -1,0 +1,11 @@
+# Correction baselines (fadict/baselines.py), Claude Sonnet 5.5, batch 50, JSON schema output.
+# User message: one line per item, `id N: <item>`.
+
+## sonnet_context (item: `…<80 chars before> [<misspelled word>] <80 chars after>…`)
+Each item is a misspelled Persian word from a Wikipedia sentence, shown in brackets. Give up to 5 corrections for the bracketed word, most likely first. Each suggestion is a single corrected word, written with Persian letters and a half-space (ZWNJ) where standard. Do not repeat the misspelled word.
+
+## sonnet_word (item: the misspelled word)
+Each item is a misspelled Persian word. Give up to 5 corrections, most likely first. Each suggestion is a single corrected word, written with Persian letters and a half-space (ZWNJ) where standard. Do not repeat the misspelled word.
+
+## schema
+{"type": "object", "properties": {"items": {"type": "array", "items": {"type": "object", "properties": {"id": {"type": "integer"}, "suggestions": {"type": "array", "items": {"type": "string"}, "maxItems": 5}}, "required": ["id", "suggestions"]}}}, "required": ["items"]}

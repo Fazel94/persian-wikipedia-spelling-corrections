@@ -102,19 +102,24 @@ class Scorer:
 
     def score(self, items: list[tuple[str, str, str, str]]) -> list[tuple[float, float, int, int]]:
         """(lm_wrong, lm_right, pieces_wrong, pieces_right) for each (left, rest, wrong, right)."""
+        flat = self.logprob([(left, rest, word) for left, rest, wrong, right in items for word in (wrong, right)])
+        return [(lw, lr, pw, pr) for (lw, pw), (lr, pr) in zip(flat[::2], flat[1::2])]
+
+    def logprob(self, items: list[tuple[str, str, str]]) -> list[tuple[float, int]]:
+        """(log-probability, word pieces) of `word` in the slot between `left` and `rest`, for
+        each (left, rest, word). Pieces are scored left to right, later ones masked."""
         tok = self.tok
-        jobs = []  # (input ids, masked position, target id, item index, 0 wrong / 1 right)
+        jobs = []  # (input ids, masked position, target id, item index)
         pieces = []
-        for n, (left, rest, wrong, right) in enumerate(items):
+        for n, (left, rest, word) in enumerate(items):
             lids, rids = self.ids(left)[-WINDOW:], self.ids(rest)[:WINDOW]
-            pw, pr = self.ids(wrong), self.ids(right)
-            pieces.append((len(pw), len(pr)))
-            for side, p in enumerate((pw, pr)):
-                for j in range(len(p)):
-                    seq = [tok.cls_token_id, *lids, *p[:j], *[tok.mask_token_id] * (len(p) - j), *rids, tok.sep_token_id]
-                    jobs.append((seq, 1 + len(lids) + j, p[j], n, side))
+            p = self.ids(word)
+            pieces.append(len(p))
+            for j in range(len(p)):
+                seq = [tok.cls_token_id, *lids, *p[:j], *[tok.mask_token_id] * (len(p) - j), *rids, tok.sep_token_id]
+                jobs.append((seq, 1 + len(lids) + j, p[j], n))
         jobs.sort(key=lambda j: len(j[0]))
-        totals = [[0.0, 0.0] for _ in items]
+        totals = [0.0] * len(items)
         torch = self.torch
         with torch.inference_mode():
             for k in range(0, len(jobs), BATCH):
@@ -132,9 +137,9 @@ class Scorer:
                 # The vocabulary projection only at the masked slot, not at every position.
                 logits = self.model.cls(hidden[rows.to(self.device), pos.to(self.device)])
                 logp = logits.log_softmax(-1)[rows.to(self.device), target.to(self.device)].tolist()
-                for (_s, _p, _t, n, side), lp in zip(chunk, logp):
-                    totals[n][side] += lp
-        return [(w, r, *p) for (w, r), p in zip(totals, pieces)]
+                for (_s, _p, _t, n), lp in zip(chunk, logp):
+                    totals[n] += lp
+        return list(zip(totals, pieces))
 
 
 def score(types: set[str], limit: int | None) -> None:

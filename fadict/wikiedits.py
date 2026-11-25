@@ -47,7 +47,11 @@ MAX_BYTES_DELTA = 8
 MAX_EDIT_DISTANCE = 2
 MAX_CHANGED_LINES = 3
 MAX_CONTEXT = 500
-KNOWN_FREQ = 100
+# Stage 1 thresholds (`displaced`, `error_type`); `python -m fadict.sensitivity` varies them.
+KNOWN_FREQ = 100  # uses in current articles that make a form known; the old form must be rarer
+DISPLACE_MIN = 20  # uses the new form needs to count as displacing the old one
+DISPLACE_RATIO = 10  # how many times more common the new form must be
+DISPUTED_SHARE = 0.5  # reverse_edits / edits at which a pair is `disputed`
 ERROR_TYPES = ("non_word", "variant", "context_dependent", "spacing", "disputed", "unverified")
 SENTENCE_END_RE = regex.compile(r"(?<=[.!?؟])\s+")
 MARKUP_RES = [
@@ -206,8 +210,10 @@ def kind(wrong: str, right: str) -> str:
 
 def displaced(p: dict) -> bool:
     """The old form is rare in current articles (under `KNOWN_FREQ`) while the new one is common:
-    at least 20 uses and 10 times as many. Editors have all but replaced one with the other."""
-    return p["wiki_freq_wrong"] < KNOWN_FREQ and p["wiki_freq_right"] >= max(20, 10 * p["wiki_freq_wrong"])
+    at least `DISPLACE_MIN` uses and `DISPLACE_RATIO` times as many. Editors have all but
+    replaced one with the other."""
+    return p["wiki_freq_wrong"] < KNOWN_FREQ and p["wiki_freq_right"] >= max(
+        DISPLACE_MIN, DISPLACE_RATIO * p["wiki_freq_wrong"])
 
 
 def is_high(p: dict) -> bool:
@@ -262,7 +268,7 @@ def error_type(p: dict, curated: set[str], weak: set[str]) -> str:
       real-word error from a grammar, style or content edit (`آن → آنها`, `از → در`, `دو → سه`);
     - `non_word`: the old form is in no lexicon, or only a weak one and `displaced`.
     A non-word stays `non_word` even when `orthographic`: `هئیت → هیئت` is a typo."""
-    if p["reverse_edits"] * 2 >= p["edits"]:
+    if p["reverse_edits"] >= DISPUTED_SHARE * p["edits"]:
         return "disputed"
     if p["kind"] == "zwnj":
         return "spacing"

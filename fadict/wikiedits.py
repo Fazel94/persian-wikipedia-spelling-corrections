@@ -6,8 +6,10 @@ never touches disk. For consecutive article revisions, the edit is a candidate w
 - the editor is not a bot and the summary is not a revert,
 - the new text is not a revert to an earlier revision (same sha1), and the edit itself is not
   reverted later in the same part (vandalism and its cleanup would yield reversed pairs).
-Each candidate contributes 1:1 word replacements within `MAX_EDIT_DISTANCE` edits, with the
-sentence before and after the edit (wiki markup stripped; empty when over `MAX_CONTEXT` chars).
+Each candidate contributes 1:1 word replacements within `MAX_EDIT_DISTANCE` edits, compared on
+the text with wiki markup stripped (category, file and interlanguage links dropped, other links
+reduced to their label), with the sentence before and after the edit (empty when over
+`MAX_CONTEXT` chars).
 
 Output per part, in `data/work/wikiedits/`:
 - `<part>.tsv`: wrong, right, rev_id, page_id, timestamp, editor (hash of username or IP, only
@@ -36,6 +38,7 @@ from pathlib import Path
 
 import regex
 
+from . import lexicon
 from .normalize import ZWNJ, normalize_text, tokenize
 
 OUT = Path("data/work/wikiedits")
@@ -44,10 +47,14 @@ MAX_BYTES_DELTA = 8
 MAX_EDIT_DISTANCE = 2
 MAX_CHANGED_LINES = 3
 MAX_CONTEXT = 500
+KNOWN_FREQ = 100
+ERROR_TYPES = ("non_word", "variant", "context_dependent", "spacing", "disputed", "unverified")
 SENTENCE_END_RE = regex.compile(r"(?<=[.!?؟])\s+")
 MARKUP_RES = [
     (regex.compile(r"<ref[^>/]*/>|<ref[^>]*>.*?</ref>|<[^>]+>", regex.S), ""),
     (regex.compile(r"\{\{[^{}]*\}\}"), ""),
+    # Category, file and interlanguage links: names, not prose. Editing them is a rename.
+    (regex.compile(r"\[\[:?\s*(?:رده|پرونده|تصو[یي]ر|category|file|image|[a-z]{2,3}(?:-[a-z]+)*)\s*:[^\]]*\]\]", regex.I), ""),
     (regex.compile(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]"), r"\1"),
     (regex.compile(r"\[https?://\S+\s*([^\]]*)\]"), r"\1"),
     (regex.compile(r"'{2,}|^[*#:;=]+|=+$", regex.M), ""),
@@ -96,11 +103,6 @@ def strip_markup(s: str) -> str:
     return " ".join(s.split())
 
 
-def plain(s: str) -> str:
-    s = strip_markup(s)
-    return s if len(s) <= MAX_CONTEXT else ""
-
-
 def word_pairs(old: str, new: str) -> list[tuple[str, str, str, str]]:
     """(wrong, right, sentence before, sentence after) for each 1:1 word fix."""
     block = changed_lines(old, new)
@@ -113,6 +115,7 @@ def word_pairs(old: str, new: str) -> list[tuple[str, str, str, str]]:
         if op != "replace" or i2 - i1 != j2 - j1:
             continue
         for before, after in zip(sa[i1:i2], sb[j1:j2]):
+            before, after = strip_markup(before), strip_markup(after)
             a = tokenize(normalize_text(before))
             b = tokenize(normalize_text(after))
             sm = difflib.SequenceMatcher(a=a, b=b, autojunk=False)
@@ -120,7 +123,8 @@ def word_pairs(old: str, new: str) -> list[tuple[str, str, str, str]]:
                 if wop == "replace" and k2 - k1 == 1 and l2 - l1 == 1:
                     wrong, right = a[k1], b[l1]
                     if wrong and right and damerau(wrong, right, MAX_EDIT_DISTANCE) <= MAX_EDIT_DISTANCE:
-                        out.append((wrong, right, plain(before), plain(after)))
+                        ctx = [s if len(s) <= MAX_CONTEXT else "" for s in (before, after)]
+                        out.append((wrong, right, *ctx))
     return out
 
 
@@ -200,19 +204,77 @@ def kind(wrong: str, right: str) -> str:
     return "word"
 
 
-def is_high(p: dict, freq: Counter) -> bool:
-    """A non-word spelling fix: confirmed by 2+ editors, rarely undone, and the old form is rare
-    in current articles while the new one is common."""
+def displaced(p: dict) -> bool:
+    """The old form is rare in current articles (under `KNOWN_FREQ`) while the new one is common:
+    at least 20 uses and 10 times as many. Editors have all but replaced one with the other."""
+    return p["wiki_freq_wrong"] < KNOWN_FREQ and p["wiki_freq_right"] >= max(20, 10 * p["wiki_freq_wrong"])
+
+
+def is_high(p: dict) -> bool:
+    """A non-word spelling fix: confirmed by 2+ editors, rarely undone, and displaced."""
     w, r = p["wrong"], p["right"]
     return (
         p["kind"] == "word"
         and p["editors"] >= 2
         and p["reverse_edits"] * 3 < p["edits"]
-        and freq[w] < 100
-        and freq[r] >= max(20, 10 * freq[w])
+        and displaced(p)
         and (min(len(w), len(r)) > 3 or damerau(w, r, 1) <= 1)
         and w != r + ZWNJ + "ی"  # ezafe style: `درجه‌ی → درجه`
     )
+
+
+def known_words(words: set[str], freq: Counter) -> tuple[set[str], set[str]]:
+    """(curated, weak): the `words` listed by a curated lexicon (Lilak lemmas, hazm verb
+    conjugations, PerDT), and the rest that only weaker evidence accepts (hazm `words.dat`,
+    Lilak hunspell, or `KNOWN_FREQ`+ uses in current articles). The weak sources also accept
+    common misspellings (`برگذار`, `فارق`, `مذبور`)."""
+    curated = words & lexicon.strong_known_words()
+    hazm = lexicon.hazm_words()
+    weak = {w for w in words - curated if w in hazm or freq[w] >= KNOWN_FREQ}
+    return curated, weak | lexicon.validate(words - curated - weak)
+
+
+_HAMZA_FOLDS = (
+    str.maketrans({"أ": "ا", "إ": "ا", "ؤ": "و", "ئ": "", "ء": "", ZWNJ: ""}),
+    str.maketrans({"أ": "ا", "إ": "ا", "ؤ": "و", "ئ": "ی", "ء": "", ZWNJ: ""}),
+)
+BE = "به" + ZWNJ
+
+
+def orthographic(a: str, b: str) -> bool:
+    """The two forms spell the same word under different conventions: the hamza seat
+    (`موسسه`/`مؤسسه`, `مسولیت`/`مسئولیت`, `پائیز`/`پاییز`) or the preposition `به` joined or
+    written apart (`بطور`/`به‌طور`)."""
+    if {a.translate(t) for t in _HAMZA_FOLDS} & {b.translate(t) for t in _HAMZA_FOLDS}:
+        return True
+    return (b.startswith(BE) and a == "ب" + b[len(BE):]) or (a.startswith(BE) and b == "ب" + a[len(BE):])
+
+
+def error_type(p: dict, curated: set[str], weak: set[str]) -> str:
+    """What a pair is, judged from the two words, a lexicon and word frequencies; first match wins:
+    - `disputed`: editors change it back at least half as often (`او ↔ وی`, `وبگاه ↔ وب‌گاه`);
+    - `spacing`: only the half-space differs;
+    - `unverified`: the fix is in no lexicon and rare (names, transliterations);
+    - `variant`: the old form is a listed word but a dispreferred spelling or usage of the same
+      word: either `orthographic` (`موسسه → مؤسسه`, `بطور → به‌طور`), or listed by a curated
+      lexicon and `displaced` (`اطاق → اتاق`, `برعلیه → علیه`);
+    - `context_dependent`: both are words in common use, so only the sentence can tell a
+      real-word error from a grammar, style or content edit (`آن → آنها`, `از → در`, `دو → سه`);
+    - `non_word`: the old form is in no lexicon, or only a weak one and `displaced`.
+    A non-word stays `non_word` even when `orthographic`: `هئیت → هیئت` is a typo."""
+    if p["reverse_edits"] * 2 >= p["edits"]:
+        return "disputed"
+    if p["kind"] == "zwnj":
+        return "spacing"
+    if p["right"] not in curated and p["right"] not in weak:
+        return "unverified"
+    w = p["wrong"]
+    is_word = w in curated or (w in weak and not displaced(p))
+    if is_word and orthographic(w, p["right"]):
+        return "variant"
+    if w in curated:
+        return "variant" if displaced(p) else "context_dependent"
+    return "context_dependent" if is_word else "non_word"
 
 
 def rows(paths: list[Path]):
@@ -223,7 +285,7 @@ def rows(paths: list[Path]):
 
 def release(dest: Path) -> None:
     """Write the dataset under `dest`: pairs/{train,test}.tsv (one row per wrong → right),
-    edits/{train,test}.jsonl.gz (one row per fix, with sentence context), validation_sample.tsv
+    edits/{train,test}.tsv.gz (one row per fix, with sentence context), validation_sample.tsv
     (200 random high-confidence pairs for hand labelling) and stats.json."""
     csv.field_size_limit(sys.maxsize)
     parts = sorted(p for p in OUT.glob("*.tsv") if not p.name.endswith(".freq.tsv"))
@@ -257,9 +319,13 @@ def release(dest: Path) -> None:
             "wiki_freq_right": freq[r],
             "kind": kind(w, r),
         }
-        p["confidence"] = "high" if is_high(p, freq) else "low"
+        p["confidence"] = "high" if is_high(p) else "low"
         pairs[w, r] = p
     del stats
+    curated, weak = known_words({w for pair in pairs for w in pair}, freq)
+    for p in pairs.values():
+        p["error_type"] = error_type(p, curated, weak)
+    del curated, weak
 
     def split(r: str) -> str:
         """~10% test, by the corrected word so no target word appears in both splits."""
@@ -274,24 +340,20 @@ def release(dest: Path) -> None:
             f.write("\t".join(cols) + "\n")
             f.writelines("\t".join(str(p[c]) for c in cols) + "\n" for p in order if split(p["right"]) == name)
 
+    # TSV like `pairs`: the Hub loads every config of a repo with the builder of its most common
+    # file type, so a JSON `edits` next to TSV `pairs` is misread as CSV.
+    edit_cols = ["rev_id", "page_id", "timestamp", "wrong", "right", "before", "after", "editor_type",
+                 "summary_flagged", "kind", "confidence", "error_type"]
     examples: dict = {}
-    files = {name: gzip.open(dest / "edits" / f"{name}.jsonl.gz", "wt", encoding="utf-8") for name in ("train", "test")}
+    files = {name: gzip.open(dest / "edits" / f"{name}.tsv.gz", "wt", encoding="utf-8", newline="") for name in ("train", "test")}
+    writers = {name: csv.writer(f, delimiter="\t", lineterminator="\n") for name, f in files.items()}
+    for w in writers.values():
+        w.writerow(edit_cols)
     for wrong, right, rev, page, ts, _editor, etype, flag, before, after in rows(parts):
         p = pairs[wrong, right]
-        row = {
-            "rev_id": int(rev),
-            "page_id": int(page),
-            "timestamp": ts,
-            "wrong": wrong,
-            "right": right,
-            "before": before,
-            "after": after,
-            "editor_type": etype,
-            "summary_flagged": flag == "1",
-            "kind": p["kind"],
-            "confidence": p["confidence"],
-        }
-        files[split(right)].write(json.dumps(row, ensure_ascii=False) + "\n")
+        writers[split(right)].writerow(
+            [rev, page, ts, wrong, right, before, after, etype, flag == "1", p["kind"], p["confidence"], p["error_type"]]
+        )
         if p["confidence"] == "high" and before and after:
             examples.setdefault((wrong, right), (before, after, rev))
     for f in files.values():
@@ -310,6 +372,8 @@ def release(dest: Path) -> None:
         "edits": sum(p["edits"] for p in order),
         "pairs": len(order),
         "pairs_by_kind": Counter(p["kind"] for p in order),
+        "pairs_by_error_type": Counter(p["error_type"] for p in order),
+        "edits_by_error_type": Counter({t: sum(p["edits"] for p in order if p["error_type"] == t) for t in ERROR_TYPES}),
         "pairs_high": sum(p["confidence"] == "high" for p in order),
         "pairs_high_test": sum(p["confidence"] == "high" and split(p["right"]) == "test" for p in order),
         "article_tokens": sum(freq.values()),

@@ -1,0 +1,27 @@
+{
+ "features": [
+  "lm_diff",
+  "lm_right",
+  "lm_wrong",
+  "pieces_diff",
+  "distance",
+  "same_rasm",
+  "len_diff",
+  "min_len"
+ ],
+ "coef": [
+  0.13463788492572848,
+  0.0376405285159705,
+  -0.09699735640976812,
+  -0.6878874825036981,
+  -1.2593832815880592,
+  0.3782912863816677,
+  -0.006003664492189452,
+  -0.2922818474075275
+ ],
+ "intercept": 1.0851418346061414,
+ "threshold": 0.5,
+ "trained_on": "data/work/context_labels.jsonl",
+ "n": 299,
+ "n_spelling": 120
+}

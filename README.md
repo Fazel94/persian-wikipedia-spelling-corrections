@@ -28,30 +28,33 @@ configs:
 - config_name: edits
   data_files:
   - split: train
-    path: edits/train.jsonl.gz
+    path: edits/train.tsv.gz
   - split: test
-    path: edits/test.jsonl.gz
+    path: edits/test.tsv.gz
+  sep: "\t"
 ---
 
 # Persian (Farsi) Wikipedia Spelling Corrections
 
 If you have ever fixed `برگذار` to `برگزار` on Persian Wikipedia, this dataset is partly yours.
 It collects the spelling fixes that Persian Wikipedia editors have made since the site began,
-taken from the full edit history: 349,350 single-word fixes covering 148,725 distinct
-misspellings, each with the sentence before and after the edit.
+taken from the full edit history: 345,318 single-word replacements covering 156,732 distinct
+pairs, each with the sentence before and after the edit. Not every replacement is a spelling
+fix; `error_type` separates the 66,762 non-word spelling fixes from grammar, style, content and
+naming edits.
 
 The errors come from people typing, so they look like real Persian typos: letters with the
 same sound swapped (`حاظر → حاضر`), dots dropped or misplaced (`همجنین → همچنین`), letters
-missed (`تلوزیون → تلویزیون`). 12,915 pairs are marked `confidence=high`. On a random sample
+missed (`تلوزیون → تلویزیون`). 12,982 pairs are marked `confidence=high`. On a random sample
 of 200 of them checked by hand, 197 were real spelling fixes (98.5%).
 
 | typo | fix | edits | editors |
 |---|---|---:|---:|
-| `برگذار` | `برگزار` | 463 | 136 |
-| `حاظر` | `حاضر` | 354 | 138 |
-| `تلوزیون` | `تلویزیون` | 274 | 86 |
-| `تاتر` | `تئاتر` | 118 | 87 |
-| `همجنین` | `همچنین` | 89 | 72 |
+| `برگذار` | `برگزار` | 461 | 135 |
+| `حاظر` | `حاضر` | 352 | 137 |
+| `تلوزیون` | `تلویزیون` | 272 | 92 |
+| `تاتر` | `تئاتر` | 123 | 93 |
+| `همجنین` | `همچنین` | 86 | 70 |
 
 ## Loading the data
 
@@ -60,7 +63,7 @@ from datasets import load_dataset
 
 pairs = load_dataset("Phazel/persian-wikipedia-spelling-corrections", "pairs")
 edits = load_dataset("Phazel/persian-wikipedia-spelling-corrections", "edits")
-test = pairs["test"].filter(lambda r: r["confidence"] == "high")  # 1,289 pairs
+test = pairs["test"].filter(lambda r: r["confidence"] == "high")  # 1,313 pairs
 ```
 
 The same files are on [GitHub](https://github.com/Fazel94/persian-wikipedia-spelling-corrections).
@@ -68,7 +71,7 @@ The same files are on [GitHub](https://github.com/Fazel94/persian-wikipedia-spel
 | config | files | one row per |
 |---|---|---|
 | `pairs` (default) | `pairs/{train,test}.tsv` | misspelling and its fix, with counts |
-| `edits` | `edits/{train,test}.jsonl.gz` | one fix in one revision, with its sentence |
+| `edits` | `edits/{train,test}.tsv.gz` | one fix in one revision, with its sentence |
 
 `validation_sample.tsv` holds the 200 hand-labelled pairs and `stats.json` the totals.
 
@@ -77,6 +80,8 @@ word that appears as a fix in `test` never appears as a fix in `train`. Each edi
 same split as its pair.
 
 ### A record from `edits`
+
+Shown as JSON; the file is gzipped TSV with these columns.
 
 ```json
 {
@@ -90,22 +95,29 @@ same split as its pair.
   "editor_type": "user",
   "summary_flagged": true,
   "kind": "word",
-  "confidence": "high"
+  "confidence": "high",
+  "error_type": "non_word",
+  "p_spelling": null
 }
 ```
 
 * `rev_id`: the revision that made the fix. Open `https://fa.wikipedia.org/w/index.php?diff=<rev_id>` to see it.
 * `page_id`, `timestamp`: the article and the time of the edit.
 * `wrong`, `right`: the word before and after, normalized (see below).
-* `before`, `after`: the edited sentence with wiki markup removed. Empty when the sentence is longer than 500 characters (3% of edits).
+* `before`, `after`: the edited sentence with wiki markup removed. Empty when the sentence is longer than 500 characters (2% of edits).
 * `editor_type`: `user` for a registered account, `ip` for an anonymous editor.
 * `summary_flagged`: the edit summary mentions spelling (`املا`, `غلط`, `تایپ`, `typo` and similar).
 * `kind`: `zwnj` when the two words differ only by the half-space (ZWNJ), otherwise `word`.
 * `confidence`: `high` or `low`, copied from the pair.
+* `error_type`: what kind of edit the pair is (see [Error type](#error-type)), copied from the pair.
+* `p_spelling`: for `context_dependent` edits, the estimated probability that this edit fixes a
+  real-word spelling error in its sentence (see [Real-word errors in context](#real-word-errors-in-context)).
+  Empty for other error types and for the 5% of `context_dependent` edits whose word could not
+  be located in its sentence.
 
 ### Columns in `pairs`
 
-* `wrong`, `right`, `kind`, `confidence`: as above.
+* `wrong`, `right`, `kind`, `confidence`, `error_type`: as above.
 * `edits`: how many revisions made this replacement.
 * `pages`, `editors`: how many different articles and editors (accounts or IP addresses) made it.
 * `first_year`, `last_year`: when it was first and last made.
@@ -128,9 +140,12 @@ earlier revision is a revert and is skipped, and so is every edit it undid. With
 vandalism followed by its cleanup would show up as a pair in the wrong direction. Edits that
 change more than 3 lines are skipped.
 
-The changed lines are split into sentences, the old and new sentences are aligned, and each
-aligned pair is split into words. Every place where one word was replaced by exactly one other
-word within a Damerau-Levenshtein distance of 2 becomes a fix.
+The changed lines are split into sentences and the old and new sentences are aligned. Wiki
+markup is stripped from each: references and templates are removed, category, file and
+interlanguage links are dropped (editing them renames a category or file, as in
+`[[رده:یادگیری ماشینی]] → [[رده:یادگیری ماشین]]`), and other links are reduced to the text
+shown. Each aligned pair is then split into words. Every place where one word was replaced by
+exactly one other word within a Damerau-Levenshtein distance of 2 becomes a fix.
 
 Both words are normalized the same way: Unicode NFKC; Arabic `ي`, `ى`, `ك`, `ة` and `ۀ` mapped
 to Persian `ی`, `ی`, `ک`, `ه` and `ه`; diacritics, tatweel and bidi marks removed; runs of ZWNJ
@@ -154,17 +169,86 @@ Everything else is `low`. The `low` pairs still contain plenty of real errors, i
 real-word errors where a valid word was used in place of another. Those need the sentence to
 judge, which is what the `edits` config is for.
 
+### Error type
+
+Not every one-word edit is a spelling fix. Editors also change grammar (`آن → آنها`), style
+(`مسئولین → مسئولان`, `بین → میان`) and facts (`دو → سه`). Whether such an edit fixes a
+misspelled word depends on its sentence. `error_type` sorts each pair using the two words,
+Persian lexicons, how often each word occurs in current articles, and the edit counts, and
+marks the pairs where that is not enough.
+
+Two kinds of evidence decide whether the old form is a word. *Curated* lexicons (Lilak lemmas,
+hazm verb conjugations, PerDT word forms) are trusted. *Weak* evidence (hazm `words.dat`, Lilak
+hunspell, or 100+ uses in current articles) also accepts common misspellings such as `برگذار`
+and `مذبور`. Frequency settles those: a pair is *displaced* when the old form occurs fewer than
+100 times in current articles and the new one at least 20 times and 10 times as often, which
+means editors have all but replaced one with the other. The first rule that matches wins:
+
+| `error_type` | rule | examples | pairs | edits |
+|---|---|---|---:|---:|
+| `disputed` | `reverse_edits` is at least half of `edits`: editors disagree | `او ↔ وی`, `از ↔ در`, `وبگاه ↔ وب‌گاه` | 19,347 | 63,072 |
+| `spacing` | `kind` is `zwnj` | `میشود → می‌شود` | 8,569 | 29,151 |
+| `unverified` | the fix has no evidence either (rare, in no lexicon) | names, transliterations | 31,095 | 36,879 |
+| `variant` | the old form is a word, and either differs from the fix only in hamza seat or a joined `به` (`orthographic`), or a curated lexicon lists it and it is displaced | `موثر → مؤثر`, `بطور → به‌طور`, `اطاق → اتاق`, `برعلیه → علیه` | 2,730 | 22,946 |
+| `context_dependent` | the old form is a word and not displaced | `آن → آنها`, `هست → است`, `دو → سه` | 28,229 | 82,402 |
+| `non_word` | the old form is in no lexicon, or only weak evidence accepts it and it is displaced | `برگذار → برگزار`, `گدرگاه → گذرگاه` | 66,762 | 110,868 |
+
+`non_word` pairs are spelling errors in any sentence. `variant` pairs replace a dispreferred
+but listed form of the same word: older spellings, hamza and joining conventions, and usage
+such as the redundant `بر` in `برعلیه`. Whether to count them as spelling depends on the use.
+The `orthographic` test folds `أ`, `إ` to `ا`, `ؤ` to `و`, `ئ` to `ی` or nothing, drops `ء`
+and ZWNJ, and accepts `ب` joined to the next word for `به‌`. It applies only when the old form
+is a word; a non-word such as `هئیت → هیئت` stays `non_word`. Dropping `ء` also merges a few
+distinct words, such as `جز → جزء` (37 edits).
+
+`context_dependent` pairs mix real-word spelling errors (`بله → بلخ`) with grammar, style and
+content edits. Only the sentence can tell these apart, so they are not counted as spelling
+fixes; `p_spelling` in the `edits` config judges them one by one. Of the `high` pairs, 12,156
+are `non_word`, 631 `variant` and 195 `unverified`.
+
+### Real-word errors in context
+
+For each `context_dependent` edit, the changed word is masked in the corrected sentence and
+the Persian BERT model [`HooshvareLab/bert-fa-zwnj-base`](https://huggingface.co/HooshvareLab/bert-fa-zwnj-base)
+gives the log-probability of the old and the new word in that slot (words of several pieces
+are scored piece by piece, left to right). A logistic regression combines the two scores with
+the shape of the edit: edit distance, whether the words differ only in dots (`زیان`/`زبان`),
+and word-piece counts. It was fitted on 299 hand-labelled edits and then frozen
+(`annotation/context_classifier.json` in the code repository); `p_spelling` is its output.
+Treat `p_spelling ≥ 0.5` as a real-word spelling fix.
+
+Each labelled edit got one of six labels, judged from the sentence: `spelling` (the old word
+makes no sense there and is a key, dot or sound away from the new one: `زیان → زبان`,
+`المان → آلمان`), `variant`, `grammar` (`فردی → فرد`), `style` (`میشن → میشوند`), `content`
+(`بودند → شدند`) and `name` (another transliteration: `مارچ → مارس`).
+
+The frozen classifier was then tested on 150 new edits, drawn at random across the score
+range and labelled by a native Persian speaker (7 skipped as unclear):
+
+| | value | Wilson 95% interval |
+|---|---:|---|
+| `context_dependent` edits that are real-word spelling fixes | 45% (64 of 143) | 37% to 53% |
+| precision of `p_spelling ≥ 0.5` | 77% | 65% to 86% |
+| recall of `p_spelling ≥ 0.5` | 73% | 62% to 83% |
+
+Most false positives are style edits, name transliterations and spelling variants. Most
+misses are slips the language model rates poorly, such as `تلفن → تلفظ` and `منتصب → منتسب`.
+
 ## Validation
 
-200 `high` pairs were drawn at random (seed 0) and labelled by a native Persian speaker, who
-looked at the sentence before and after each edit. 197 were spelling fixes, a precision of
+200 `high` pairs were drawn at random (seed 0) from the previous build of this dataset, which
+did not yet strip category and file links, and labelled by a native Persian speaker, who
+looked at the sentence before and after each edit. 193 of the 200 are still `high` in this
+build. 197 were spelling fixes, a precision of
 98.5% (Wilson 95% interval 95.7% to 99.5%). The other three were a transliteration of a name
 (`ماینکرافت → ماینکرفت`), a switch between two accepted spellings
 (`سپیدپوستان → سفیدپوستان`), and a name split by mistake (`کیی → کی`, from `بان کی مون`).
 The labels are in `validation_sample.tsv`, with a link to each diff.
 
 There was one annotator, so no agreement score is available, and the precision of the `low`
-pairs was not measured.
+pairs was not measured. For the 150 test edits of `p_spelling`, Claude Sonnet 5.5 labelled
+the same edits with the same guideline; its agreement with the human annotator is Cohen's
+κ = 0.60 over the six labels and κ = 0.64 for spelling against the rest.
 
 ## Limitations
 
@@ -194,21 +278,35 @@ its `rev_id`.
 The text comes from Persian Wikipedia and is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), and so is this dataset.
 Attribution: Persian Wikipedia contributors, https://fa.wikipedia.org. The extraction code in
-`fadict/` and `scripts/` on GitHub is MIT-licensed.
+`fadict/`, `scripts/` and `annotation/` on GitHub is MIT-licensed.
 
 ## Rebuilding it
 
 The code is in the [GitHub repository](https://github.com/Fazel94/persian-wikipedia-spelling-corrections),
 taken from the author's Persian keyboard dictionary project. You need Python 3.10 or newer,
-`pip install regex`, and the `7z` command.
+`pip install regex spylls`, and the `7z` and `unzip` commands (`hunspell` is used instead of
+`spylls` when installed).
 
 ```sh
 scripts/fetch_wikihist.sh 2026-11-01                    # 5.5 GB into data/raw/wikihist/
+scripts/fetch_lexicons.sh                               # Lilak, hazm, PerDT into data/raw/
 python -m fadict.wikiedits data/raw/wikihist/*.7z       # one worker per core
 python -m fadict.wikiedits release                      # writes dist/fawiki_typos/
 ```
 
 On an 8-core machine the download took about 20 minutes and the scan a little over an hour.
+
+`p_spelling` needs `pip install torch transformers` and takes about 6 minutes on one GPU:
+
+```sh
+python -m fadict.context score      # BERT scores of context_dependent edits
+python -m fadict.context classify   # frozen annotation/context_classifier.json → p_spelling
+python -m fadict.context annotate   # adds p_spelling to dist/fawiki_typos/edits/
+```
+
+The hand labels behind the classifier are in `annotation/context_labels_dev.tsv` (299 edits,
+used to fit it) and `annotation/context_labels_test.tsv` (150 edits, used only to test it,
+with Claude Sonnet 5.5's labels alongside).
 
 ## Citation
 

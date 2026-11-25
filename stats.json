@@ -1,11 +1,27 @@
 {
- "edits": 349350,
- "pairs": 148725,
+ "edits": 345318,
+ "pairs": 156732,
  "pairs_by_kind": {
-  "word": 140911,
-  "zwnj": 7814
+  "word": 147085,
+  "zwnj": 9647
  },
- "pairs_high": 12915,
- "pairs_high_test": 1289,
- "article_tokens": 252297227
+ "pairs_by_error_type": {
+  "variant": 2730,
+  "context_dependent": 28229,
+  "spacing": 8569,
+  "disputed": 19347,
+  "non_word": 66762,
+  "unverified": 31095
+ },
+ "edits_by_error_type": {
+  "non_word": 110868,
+  "variant": 22946,
+  "context_dependent": 82402,
+  "spacing": 29151,
+  "disputed": 63072,
+  "unverified": 36879
+ },
+ "pairs_high": 12982,
+ "pairs_high_test": 1313,
+ "article_tokens": 229553360
 }

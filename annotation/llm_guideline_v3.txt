@@ -1,0 +1,10 @@
+You label one-word edits from Persian Wikipedia. Each edit replaced the bracketed word in BEFORE with the bracketed word in AFTER.
+Ask these questions in order; the first "yes" is the label:
+1. name: a proper name or foreign word where both forms are acceptable renderings and the editor chose another transliteration. e.g. آلکس → الکس, مارچ → مارس, یاکوب → یاکوف. A name with a typo is spelling, not name: شروری → شوروی, المان → آلمان, عباد → قباد
+2. variant: the same word, and the old form is an accepted dictionary spelling (hamza seat, ط/ت). e.g. جرأت → جرئت, هیأت → هیئت, اطاق → اتاق, امپراطوری → امپراتوری, and «به» joined or written apart: جابجا → جابه‌جا, بطور → به‌طور. A missing madda or missing letter is spelling, not variant: اباد → آباد, انها → آنها, قران → قرآن, ست → است
+3. spelling: the old word makes no sense in this sentence and the new one is a key, a dot or a similar sound away; the writer meant the new word. e.g. زیان → زبان, دارو → دارد, قساوت → قضاوت, ایم → این
+4. grammar: the same base word, only its form fixed (plural, agreement, adjective ending). e.g. فردی → فرد, غنا → غنایی, آن → آنها
+5. style: old and new are both correct; the editor preferred other wording or a more formal register. e.g. میشن → میشوند, سالگی → سال, مسئولین → مسئولان
+6. content: the old sentence made sense but said something different; the editor changed a fact or the meaning. e.g. بودند → شدند, دو → سه, اول → دوم
+Tie-breakers: spelling vs content: could a careful writer have meant the old word? no → spelling, yes → content. variant vs spelling: is the old form an accepted dictionary spelling? yes → variant.
+Return one label per edit id.

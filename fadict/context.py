@@ -300,15 +300,15 @@ def sample(n: int, out_path: Path = SAMPLE, seed: int = 0, exclude: Path | None 
 
 
 def stage1_sample(sizes: dict[str, int] = STAGE1_SIZES, out_path: Path = STAGE1, seed: int = 2,
-                  exclude: Path | None = None) -> None:
+                  exclude: tuple[Path, ...] = ()) -> None:
     """Write `out_path`: pairs drawn at random from each class in `sizes`, each with the first of
-    its edits whose changed word can be located in the sentence. Pairs in `exclude` (an earlier
-    sheet) are skipped. The `error_type` column is for analysis; `context_recipe.py` does not
-    show it to annotators."""
+    its edits whose changed word can be located in the sentence. Pairs in the `exclude` files
+    (earlier sheets) are skipped. The `error_type` column is for analysis; `context_recipe.py`
+    does not show it to annotators."""
     skip = set()
-    if exclude:
-        with exclude.open(encoding="utf-8", newline="") as f:
-            skip = {(r["wrong"], r["right"]) for r in csv.DictReader(f, delimiter="\t")}
+    for path in exclude:
+        with path.open(encoding="utf-8", newline="") as f:
+            skip |= {(r["wrong"], r["right"]) for r in csv.DictReader(f, delimiter="\t")}
     first: dict[tuple[str, str], dict] = {}
     for row in edits(set(sizes)):
         key = (row["wrong"], row["right"])
@@ -343,7 +343,7 @@ def main(argv: list[str]) -> int:
     elif argv[:1] == ["stage1-sample"]:
         stage1_sample()
     elif argv[:1] == ["variant-sample"]:
-        stage1_sample({"variant": 50}, VARIANT_SAMPLE, seed=3, exclude=STAGE1)
+        stage1_sample({"variant": 50}, VARIANT_SAMPLE, seed=3, exclude=(STAGE1,))
     elif argv[:1] == ["fit"]:
         fit()
     elif argv[:1] == ["classify"]:

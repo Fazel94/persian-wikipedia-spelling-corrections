@@ -1,0 +1,737 @@
+wrong	right	rev_id	label	sheet
+سپیدپوستان	سفیدپوستان		not_fix	validation
+گدرگاه	گذرگاه		spelling	validation
+ضحنه	صحنه		spelling	validation
+اخرالزمان	آخرالزمان		spelling	validation
+حاملکی	حاملگی		spelling	validation
+متعقد	منعقد		spelling	validation
+قعالیت‌های	فعالیت‌های		spelling	validation
+شنکجه	شکنجه		spelling	validation
+یونای	یونانی		spelling	validation
+ددو	دو		spelling	validation
+قالیجه	قالیچه		spelling	validation
+ساختع	ساخته		spelling	validation
+موفترین	موفقترین		spelling	validation
+تماشگر	تماشاگر		spelling	validation
+ماینکرافت	ماینکرفت		not_fix	validation
+باشن	باشند		spelling	validation
+خقوق	حقوق		spelling	validation
+باطری‌های	باتری‌های		spelling	validation
+کیی	کی		not_fix	validation
+امانول	امانوئل		spelling	validation
+نظ	نظر		spelling	validation
+جناج	جناح		spelling	validation
+مذتی	مدتی		spelling	validation
+پیدار	پدیدار		spelling	validation
+نامتنهاهی	نامتناهی		spelling	validation
+بدعت‌گزار	بدعت‌گذار		spelling	validation
+دسامر	دسامبر		spelling	validation
+امپرانور	امپراتور		spelling	validation
+کاگزاران	کارگزاران		spelling	validation
+اضاه	اضافه		spelling	validation
+پارگلایدر	پاراگلایدر		spelling	validation
+رامد	رامبد		spelling	validation
+فیثاقورث	فیثاغورث		spelling	validation
+مغرها	مغزها		spelling	validation
+انانموس	انانیموس		spelling	validation
+زنگینامه	زندگینامه		spelling	validation
+عراضی	اراضی		spelling	validation
+دهستات	دهستان		spelling	validation
+نخش	بخش		spelling	validation
+هئیت	هیئت		spelling	validation
+تساحب	تصاحب		spelling	validation
+مصنویی	مصنوعی		spelling	validation
+قانوین	قانونی		spelling	validation
+عنده	عمده		spelling	validation
+محاکه	محاکمه		spelling	validation
+حبر	خبر		spelling	validation
+اسداالله	اسدالله		spelling	validation
+مشحصی	مشخصی		spelling	validation
+آمزش	آموزش		spelling	validation
+الکرون	الکترون		spelling	validation
+ژوئه	ژوئیه		spelling	validation
+شرظ	شرط		spelling	validation
+چخش	پخش		spelling	validation
+یکب	یکی		spelling	validation
+واگذر	واگذار		spelling	validation
+نمیاد	نماید		spelling	validation
+آبوم	آلبوم		spelling	validation
+ندگی	زندگی		spelling	validation
+لغب	لقب		spelling	validation
+ردم	مردم		spelling	validation
+جستارهی	جستارهای		spelling	validation
+کبلو	کابیو		spelling	validation
+دییگر	دیگر		spelling	validation
+پپیمان	پیمان		spelling	validation
+اسران	ایران		spelling	validation
+تایع	تابع		spelling	validation
+ممعمولا	معمولا		spelling	validation
+تهرا	تهران		spelling	validation
+جایکاه	جایگاه		spelling	validation
+بایسنغری	بایسنقری		spelling	validation
+مستقما	مستقیما		spelling	validation
+غلطت	غلظت		spelling	validation
+المعرف	المعارف		spelling	validation
+افتباسی	اقتباسی		spelling	validation
+دومنیکن	دومینیکن		spelling	validation
+متاول	متداول		spelling	validation
+قورباقه	قورباغه		spelling	validation
+انه‌هایی	خانه‌هایی		spelling	validation
+دبده	دیده		spelling	validation
+مشیعت	مشیت		spelling	validation
+داالفنون	دارالفنون		spelling	validation
+پیشمان	پشیمان		spelling	validation
+ایتدایی	ابتدایی		spelling	validation
+مشابهه	مشابه		spelling	validation
+ردایو	رادیو		spelling	validation
+مسئاله	مسئله		spelling	validation
+تریانوس	ترایانوس		spelling	validation
+نانم	نام		spelling	validation
+مشا	شما		spelling	validation
+مک‌دونال	مک‌دانل		spelling	validation
+خورشیذی	خورشیدی		spelling	validation
+عیله	علیه		spelling	validation
+المیک	المپیک		spelling	validation
+می‌شودند	می‌شوند		spelling	validation
+سپره	سپرده		spelling	validation
+دوازدهیم	دوازدهمین		spelling	validation
+منیع	منابع		spelling	validation
+جریام	جریان		spelling	validation
+خیبان	خیابان		spelling	validation
+بیگربیگی	بیگلربیگی		spelling	validation
+تاریخجه	تاریخچه		spelling	validation
+تابیر	تعبیر		spelling	validation
+اتفاقتی	اتفاقاتی		spelling	validation
+نرگ	مرگ		spelling	validation
+هنزمندان	هنرمندان		spelling	validation
+حای	های		spelling	validation
+قالبیت	قابلیت		spelling	validation
+اشتوتکارت	اشتوتگارت		spelling	validation
+السعد	السد		spelling	validation
+ویالن	ویلن		spelling	validation
+گتیج	کتیج		spelling	validation
+اینترنشال	اینترنشنال		spelling	validation
+برتیانیا	بریتانیا		spelling	validation
+احل	اهل		spelling	validation
+افتاخارات	افتخارات		spelling	validation
+پلانگتون	پلانکتون		spelling	validation
+مسئود	مسعود		spelling	validation
+پارسیکل	پارسکیل		spelling	validation
+شادمهری	شادمهر		spelling	validation
+پیداه	پیاده		spelling	validation
+محلس	مجلس		spelling	validation
+خای	های		spelling	validation
+محتلف	مختلف		spelling	validation
+جادگر	جادوگر		spelling	validation
+تقشه‌های	نقشه‌های		spelling	validation
+ویرایستاری	ویراستاری		spelling	validation
+میرزااقایی	میرزاآقایی		spelling	validation
+صورن	صورت		spelling	validation
+موجد	موجود		spelling	validation
+خاهر	خواهر		spelling	validation
+فارق‌التحصیلی	فارغ‌التحصیلی		spelling	validation
+لحظ	لحاظ		spelling	validation
+هوکاید	هوکایدو		spelling	validation
+هافا	هوفا		spelling	validation
+پنانسیل	پتانسیل		spelling	validation
+سابت	سایت		spelling	validation
+افزدون	افزودن		spelling	validation
+دیژیتال	دیجیتال		spelling	validation
+اورتودوکس	ارتدوکس		spelling	validation
+قفر	فقر		spelling	validation
+مکریک	مکزیک		spelling	validation
+نورن‌ها	نورون‌ها		spelling	validation
+رسمآ	رسما		spelling	validation
+تامید	تاکید		spelling	validation
+جزعیات	جزئیات		spelling	validation
+آندارنیک	آندرانیک		spelling	validation
+کتای	کتاب		spelling	validation
+حکوکت	حکومت		spelling	validation
+اولیت	اولویت		spelling	validation
+پیده	پدیده		spelling	validation
+تنضیم	تنظیم		spelling	validation
+سرکوپ	سرکوب		spelling	validation
+بهد	بعد		spelling	validation
+رخم	زخم		spelling	validation
+طرفدارن	طرفداران		spelling	validation
+اسخته	ساخته		spelling	validation
+انان	آنان		spelling	validation
+یوروتمیکس	یوریتمیکس		spelling	validation
+بداشتن	برداشتن		spelling	validation
+پستاندارن	پستانداران		spelling	validation
+تمای	تمامی		spelling	validation
+اراثه	ارائه		spelling	validation
+منفرزاده	منفردزاده		spelling	validation
+نوینده	نویسنده		spelling	validation
+مرتال	مورتال		spelling	validation
+نامز	نامزد		spelling	validation
+ویلکینس	ویلکینز		spelling	validation
+اضظراری	اضطراری		spelling	validation
+اایجاد	ایجاد		spelling	validation
+ایتالبا	ایتالیا		spelling	validation
+نکهداری	نگهداری		spelling	validation
+تاربخ	تاریخ		spelling	validation
+نترل	کنترل		spelling	validation
+مهاحرت	مهاجرت		spelling	validation
+اپراطور	اپراتور		spelling	validation
+شاخهی	شاخه		spelling	validation
+المپک	المپیک		spelling	validation
+سرط	شرط		spelling	validation
+اورگوئه	اروگوئه		spelling	validation
+احالی	اهالی		spelling	validation
+نبودندی	نبودند		spelling	validation
+آینشتاین	اینشتین		spelling	validation
+تجهزات	تجهیزات		spelling	validation
+تآلیف	تألیف		spelling	validation
+ژانوایه	ژانویه		spelling	validation
+ایارن	ایران		spelling	validation
+قذرت	قدرت		spelling	validation
+تععین	تعیین		spelling	validation
+کامبوچیا	کمپوچیا		spelling	validation
+استورات	استوارت		spelling	validation
+ویراش	ویرایش		spelling	validation
+أمین	امین		spelling	validation
+مسر	مصر		spelling	validation
+طرافداران	طرفداران		spelling	validation
+نفطه	نقطه		spelling	validation
+انتخواب	انتخاب		spelling	validation
+حای	جای		spelling	validation
+اشلره	اشاره		spelling	validation
+تنهال	تنها		spelling	validation
+اصطلاحآ	اصطلاحا		spelling	validation
+کانتربری	کنتربری	37777860	name	stage1
+رابهط	رابطه	32228039	spelling	stage1
+لحطه	لحظه	37276443	spelling	stage1
+شپردند	سپردند	6144185	spelling	stage1
+چزئیات	جزئیات	3614925	spelling	stage1
+ناکونونو	نوکونونو	28114752	name	stage1
+موصولو	موصل	28045113	spelling	stage1
+باقالایی	باقلایی	17896298	variant	stage1
+گذرذ	گذرد	18903489	spelling	stage1
+وکلائی	وکلای	28745991	variant	stage1
+ماری	مری	15350497	name	stage1
+مجمسمه	مجسمه	32370146	spelling	stage1
+فلیم‌هایی	فیلم‌هایی	17198249	spelling	stage1
+مزسکونی	مسکونی	32705793	spelling	stage1
+مغز	مغزی	8889120	grammar	stage1
+بهمن	بتین	3992727	content	stage1
+رورهای	روزهای	34997858	spelling	stage1
+فارد	افراد	1046228	spelling	stage1
+الگوی	الگویی	12974135	grammar	stage1
+بقاء	بقا	30094857	variant	stage1
+خولق	خلق	851288	spelling	stage1
+التحیل	التحصیل	21399305	spelling	stage1
+کاظمبن	کاظمین	16270262	spelling	stage1
+پلدوریس	پولدوریس	15021023	name	stage1
+محصولیر	محصولی	21493436	spelling	stage1
+اوتاستاتی‌یر	اوتاستاتیر	30100909	name	stage1
+اعتمادی‌فر	اعتمادفر	39966644	content	stage1
+ازل	عزل	6197441	spelling	stage1
+بهرتین‌های	بهترین‌های	30668031	spelling	stage1
+ملفیسنت	مالیفیسنت	14768962	name	stage1
+الخلیفه	الخلیفی	8965321	style	stage1
+یانگسو	جانگسو	31646733	name	stage1
+سانتریفوژ	سانتریفیوژ	11005098	spelling	stage1
+رفق	رفقا	1298399	spelling	stage1
+باستان	داستان	18548914	spelling	stage1
+أمور	امور	23672413	spelling	stage1
+استاداان	استادان	18243519	spelling	stage1
+حوزه‌هاس	حوزه‌های	16183910	spelling	stage1
+آژمایشش	آزمایشش	28569800	spelling	stage1
+مرسومی	مرسوم	31970179	spelling	stage1
+دباعی	دباغی	2713931	spelling	stage1
+بازگردنده	بازگردانده	15285536	spelling	stage1
+مصلحانه	مسلحانه	4185115	spelling	stage1
+بپرداخت	پرداخت	24951226	spelling	stage1
+پروتویین	پروتوئین	30361359	variant	stage1
+کرنه	کهنه	18725474	spelling	stage1
+نداشتن	داشتن	37674056	content	stage1
+مواخره	موخره	28872060	spelling	stage1
+ستاکتون	استاکتون	1021082	name	stage1
+لوئیزا	لوییزا	22966658	name	stage1
+جسبانده	چسبانده	18541817	spelling	stage1
+سئوک	سوک	32151626	name	stage1
+سازگار	سازگارا	34085540	content	stage1
+کرایسز	کرایسیس	15411885	name	stage1
+ایزدگشنسب	ایزدگشنسپ	16170702	name	stage1
+قلموهای	قلم‌موهای	38331198	spelling	stage1
+فوتبالیسته	فوتبالیست	13908681	spelling	stage1
+کسایی	کسائی	4736191	variant	stage1
+ارنج	اورنج	364439	name	stage1
+آرمان	آرماند	21986709	name	stage1
+پرتیتراژترین	پرتیراژترین	35917365	spelling	stage1
+میاان	میا	17943502	spelling	stage1
+رهیابی	ردیابی	38226531	content	stage1
+آدلف	آدولف	1926434	name	stage1
+سفرههای	سفرهای	9184907	spelling	stage1
+توانانیی	توانایی	35364241	spelling	stage1
+ستر	سنتر	32213126	spelling	stage1
+مأاوس	مانوس	25424171	spelling	stage1
+ارتباطهای	ارتباط‌های	17946555	spelling	stage1
+فرغانا	فرغانه	16981131	name	stage1
+طرف‌شویی	ظرف‌شویی	12809023	spelling	stage1
+احجام	حجم	11063799	grammar	stage1
+کولبوک	کولبک	21782235	name	stage1
+بنار	بنا	44104490	spelling	stage1
+مین	ماینل	36007713	name	stage1
+گورا	گوئرا	28155580	name	stage1
+پسری	پسر	25941598	spelling	stage1
+فرزندنش	فرزندش	27546262	spelling	stage1
+زیج	زیگ	149297	spelling	stage1
+ویلیا	ویلیام	24767397	spelling	stage1
+سرگشاه	سرگشاده	8279288	spelling	stage1
+بزرک	برزک	16350085	spelling	stage1
+مترفع	مرتفع	22232934	spelling	stage1
+جهن	جهان	29924798	spelling	stage1
+مایکروسیستم	مایکروسیستمز	11148218	name	stage1
+تراور	ترور	18641759	name	stage1
+فرضییه	فرضیه	25247953	spelling	stage1
+اروپاییان	اروپائیان	5908087	variant	stage1
+دوزین	دوزی	38522926	spelling	stage1
+اقصا	اقصی	34122364	variant	stage1
+دوم	أول	1308903	content	stage1
+اربیتال	اوربیتال	29781616	spelling	stage1
+عرقان	عرفان	21864614	spelling	stage1
+خینگالی	خینکالی	34087145	name	stage1
+خودروی	خودرو	28090690	spelling	stage1
+فبروئری	فبیوئری	25806045	name	stage1
+بنام	به‌نام	41623308	spelling	stage1
+آیکمن	ایکمن	31460428	name	stage1
+ابوموسا	ابوموسی	29409093	spelling	stage1
+پرکسی‌تن	پراکسی‌تن	36097045	variant	stage1
+دیواه	دیواره	11931940	spelling	stage1
+حمخت‌هایی	سوخت‌هایی	21443114	spelling	stage1
+پسوتر	پوستر	43518380	spelling	stage1
+این	یک	784899	spelling	stage1
+ایغور	اویغور	32193260	name	stage1
+نئودجونت	نئوآدجوونت	3214327	name	stage1
+بیت‌الهدی	بنت‌الهدی	38811930	content	stage1
+ثبات‌گرا	اثبات‌گرا	16561779	spelling	stage1
+آمریکائیان	آمریکاییان	18182904	variant	stage1
+به‌عنوام	به‌عنوان	23097263	spelling	stage1
+پولی‌پوکساید	پلی‌پوکساید	25748252	name	stage1
+سانتگ	سانتاگ	30895779	name	stage1
+اکمال	کمال	4585597	name	stage1
+شادشهر	شاهدشهر	28526169	spelling	stage1
+نوابع	نوابغ	8451132	spelling	stage1
+مقدامتی	مقدماتی	29100060	spelling	stage1
+هچارمحال	چهارمحال	31683030	spelling	stage1
+خواندی	خواندنی	2439214	spelling	stage1
+جنکلبانان	جنگلبانان	32202705	spelling	stage1
+مجمه	مجموعه	34175103	spelling	stage1
+کالچیناته	کلچیناته	34014088	name	stage1
+کارناوال	کارنیوال	28698177	name	stage1
+سورششان	شورششان	25002171	spelling	stage1
+قیل	فیل	13466905	spelling	stage1
+فینقیه	فنیقیه	41336409	spelling	stage1
+رویت	رؤیت	30727753	variant	stage1
+بین‌الکللی	بین‌المللی	38916035	spelling	stage1
+سزوتونین	سروتونین	10132736	spelling	stage1
+ماجاهوند	ماجاهوندا	40958196	name	stage1
+ستخراج	استخراج	43183656	spelling	stage1
+هجده	هفده	42819407	content	stage1
+برانت	براندت	11421509	name	stage1
+روسا	روسای	31099661	spelling	stage1
+مسنضعفان	مستضعفان	3030190	spelling	stage1
+هنر	فن	16282905	content	stage1
+بیگربیکی	بیگلربیگی	19639979	spelling	stage1
+پیشواییان	پیشوائیان	24066363	variant	stage1
+نیکولاوس	نیکلاوس	12795558	name	stage1
+تنوس	تانوس	30191629	name	stage1
+خورندگی	خوردگی	13255537	spelling	stage1
+نوتدگان	نوادگان	6197084	spelling	stage1
+کفل	کمر	4402673	spelling	stage1
+دیزالیرالف	دیسالیرالف	27070040	name	stage1
+بیلرسود	بیلرسوت	12062406	spelling	stage1
+فروغ	فروع	18334803	spelling	stage1
+جهان	کیهان	36581166	content	stage1
+لویکینو	لوچینو	4417666	name	stage1
+داودنژادآزاده	داوودنژادآزاده	28966000	variant	stage1
+مجتنع	مجتمع	40324586	spelling	stage1
+آنتروپوید	انتروپوید	30475970	name	stage1
+روز	رو	10130096	spelling	stage1
+سیلیان	کیلین	15594551	name	stage1
+نعناء	نعناع	26047138	variant	stage1
+رودسرس	رودسری	41572262	spelling	stage1
+موزائیگ	موزائیک	19751078	spelling	stage1
+آلودی	الودی	17146303	name	stage1
+نهاندن	نهادن	17659515	spelling	stage1
+طهائی	طهایی	24923237	name	stage1
+تاید	تایید	11135910	spelling	stage1
+قبیلیه	قبیله	31746013	spelling	stage1
+موردد	مورد	6329036	spelling	stage1
+زمامی	زمانی	39984342	spelling	stage1
+سفیدپوستا	سفیدپوستان	26720887	grammar	stage1
+کذاران	گذاران	3212330	spelling	stage1
+کراس	کروس	4042265	name	stage1
+آورد	آوردن	1477281	grammar	stage1
+مانچه	مانش	12477742	name	stage1
+الکترونغناطیسی	الکترومغناطیسی	19418290	spelling	stage1
+شلمقانی	شلمغانی	18458528	spelling	stage1
+زردمو	زردموی	29432137	style	stage1
+برودوس	برادوس	40463681	name	stage1
+بیارند	بیاورند	24218515	style	stage1
+قره	قرا	39808722	variant	stage1
+بقیه‌ی	بقیه	110186	grammar	stage1
+بشورید	بشویید	39743835	variant	stage1
+کمپوستلا	کومپوستلا	41889728	name	stage1
+مک‌کئون	مک‌کیان	32006600	name	stage1
+ژولیانو	زولیانو	25542276	name	stage1
+تارخیدانان	تاریخدانان	28981595	spelling	stage1
+ابیدا	ابتدا	29067259	spelling	stage1
+خوناشامی	خون‌آشامی	38615023	variant	stage1
+می‌باشند	می‌باشد	29643071	style	stage1
+فیلیگ	فیلیپ	37100343	spelling	stage1
+راسته‌ی	راسته	4108683	grammar	stage1
+توکوپیلا	توکوپیا	21634919	name	stage1
+محندزاده	محمدزاده	31359012	spelling	stage1
+حمله	حمله‌ی	38043748	grammar	stage1
+رطبوت	رطوبت	28422396	spelling	stage1
+قراین	قرائن	30977607	variant	stage1
+بوسیبه	بوسیله	7608990	spelling	stage1
+یاموم	موم	5304615	spelling	stage1
+بصورت	به‌صورت	43004576	variant	stage1
+سرخ‌پوستان	سرخپوستان	5060981	variant	stage1
+شاشوراتو	شاسوراتو	41230075	name	stage1
+مبود	بود	4410870	spelling	stage1
+سرنشنیان	سرنشینان	37418956	spelling	stage1
+رماتیسم	رمانتیسم	19520370	spelling	stage1
+تولیده	تولید	27157762	spelling	stage1
+ندارن	ندارند	35582961	style	stage1
+نائب‌السلطنه	نایب‌السلطنه	21923995	variant	stage1
+نوزه	نوژه	24121854	spelling	stage1
+کنب	کتب	16948798	spelling	stage1
+اسلامبول	استانبول	43080466	variant	stage1
+نمام	نام	762824	spelling	stage1
+بتنهایی	به‌تنهایی	38807491	spelling	stage1
+هایپررئالیست	هایپررئالیسم	8892432	content	stage1
+کمنیست	کمونیست	26691420	spelling	stage1
+گوآسگان	گوآسگن	36805378	name	stage1
+شأن	شان	37444596	name	stage1
+یوووف	یووف	22378951	name	stage1
+مزتضی	مرتضی	40853600	spelling	stage1
+ژاکوس	ژاک	16220408	name	stage1
+جونکادلا	خونکادیا	17674559	name	stage1
+بخوانی	بخوانند	28989638	spelling	stage1
+ساه	سپاه	7941985	spelling	stage1
+ایدیولوژیک	ایدئولوژیک	40647002	variant	stage1
+انجم	انجمن	13738154	spelling	stage1
+قحط	قحطی	41851017	style	stage1
+پاینه	پارینه	44227628	spelling	stage1
+گناهکارآن	گناهکاران	30428897	spelling	stage1
+شان	شأن	13169719	variant	stage1_variant
+أبو	ابو	10637123	variant	stage1_variant
+آیین‌نامه	آئین‌نامه	28606505	variant	stage1_variant
+بناچار	به‌ناچار	41627504	variant	stage1_variant
+جئونگ	جونگ	39245721	name	stage1_variant
+جبرائیل	جبراییل	1930266	name	stage1_variant
+بنامی	به‌نامی	43147394	variant	stage1_variant
+نیون	نئون	22757	variant	stage1_variant
+مادا	مائدا	37986331	name	stage1_variant
+هوی	هوئی	33253107	name	stage1_variant
+اشیا	اشیاء	16323158	variant	stage1_variant
+اروپائیان	اروپاییان	22166733	variant	stage1_variant
+صفاییه	صفائیه	36580673	variant	stage1_variant
+متاخرتری	متأخرتری	37478018	variant	stage1_variant
+پاوو	پاوئو	22869750	name	stage1_variant
+موسساتی	مؤسساتی	44272052	variant	stage1_variant
+طائر	طایر	5509184	variant	stage1_variant
+اولیائی	اولیایی	25278041	variant	stage1_variant
+ناپلیون	ناپلئون	40854791	variant	stage1_variant
+کاینات	کائنات	26240131	variant	stage1_variant
+بوضوح	به‌وضوح	40829139	variant	stage1_variant
+مامورانش	مأمورانش	32873328	variant	stage1_variant
+ماموریت	مأموریت	7398330	variant	stage1_variant
+اوائل	اوایل	44161458	variant	stage1_variant
+بمناسبت	به‌مناسبت	38027521	variant	stage1_variant
+سوییچ‌ها	سوئیچ‌ها	40491313	variant	stage1_variant
+موزاییک	موزائیک	2609714	variant	stage1_variant
+نارسائی	نارسایی	26593685	variant	stage1_variant
+بکل	به‌کل	42417375	variant	stage1_variant
+بدور	به‌دور	29465665	variant	stage1_variant
+صحرائی	صحرای	18818359	variant	stage1_variant
+هیئات	هیات	16178758	variant	stage1_variant
+ماذون	مأذون	36657848	variant	stage1_variant
+نول	نوئل	37016974	variant	stage1_variant
+طائی	طایی	18596090	variant	stage1_variant
+مولف	مؤلف	24785100	variant	stage1_variant
+استمنا	استمناء	279502	variant	stage1_variant
+ماموران	مأموران	7761276	variant	stage1_variant
+رای‌دهی	رأی‌دهی	26343707	variant	stage1_variant
+کسرائیان	کسراییان	29795596	variant	stage1_variant
+دائی	دایی	39831064	variant	stage1_variant
+تیوریک	تئوریک	30473996	variant	stage1_variant
+نوائی	نوایی	43212167	variant	stage1_variant
+بوقت	به‌وقت	43701192	variant	stage1_variant
+موسسه‌های	مؤسسه‌های	16440924	variant	stage1_variant
+قائدی	قایدی	33076267	variant	stage1_variant
+مشائی	مشایی	37213256	variant	stage1_variant
+لائی	لایی	25389122	variant	stage1_variant
+تاسف‌بار	تأسف‌بار	18902295	variant	stage1_variant
+خداییان	خدائیان	32926754	variant	stage1_variant
+هوادارن	هواداران	26961847	spelling	context_dev
+ژن	جین	37726172	grammar	context_dev
+ریچارد	ریشارد	31173736	grammar	context_dev
+افی	آفی	28927564	content	context_dev
+تاریخ	تاریخچه	34108151	content	context_dev
+شیروان	شروان	38073511	style	context_dev
+چچن	چین	30847083	content	context_dev
+مکتشفین	مکتشفان	43273205	style	context_dev
+ایزابلای	ایزابل	44163078	style	context_dev
+بازیگر	بازیگران	34208796	style	context_dev
+اباد	آباد	12120585	spelling	context_dev
+یی	ای	29979053	spelling	context_dev
+مسأله	مسئله	28518361	style	context_dev
+فیلد	فیلدز	33511047	grammar	context_dev
+وردن	وردان	34700752	spelling	context_dev
+غالب	قالب	42983169	spelling	context_dev
+بدن	بدون	28561535	spelling	context_dev
+حدود	محدود	36857426	spelling	context_dev
+گیون	گرین	36316204	spelling	context_dev
+توگو	تونس	35808841	content	context_dev
+اسلوواکی	اسلووانی	32266945	content	context_dev
+یال	سال	13774853	spelling	context_dev
+وسط	وسعت	8674706	spelling	context_dev
+آی	آب	2584660	spelling	context_dev
+می‌کنند	می‌کردند	38975111	grammar	context_dev
+دادن	دادند	21595843	spelling	context_dev
+خاری	خواری	15270744	spelling	context_dev
+ست	است	27445151	spelling	context_dev
+بوند	بودند	14552765	spelling	context_dev
+گورگان	گورکان	22490370	spelling	context_dev
+دار	دارد	44485992	spelling	context_dev
+گر	اگر	26414102	spelling	context_dev
+مشابه‌سازی	مشابهت‌سازی	17955623	style	context_dev
+غالب	قالب	12885333	spelling	context_dev
+خزندگان	پرندگان	18593166	content	context_dev
+تخت	تحت	25529301	spelling	context_dev
+هاو	هو	465261	spelling	context_dev
+ذر	در	27455604	spelling	context_dev
+کارآیی	کارایی	22063197	spelling	context_dev
+درجه	درصد	16350771	content	context_dev
+محی‌الدین	محیی‌الدین	16435407	spelling	context_dev
+بند	بدن	31007046	spelling	context_dev
+ک	کر	21054218	spelling	context_dev
+مخالفین	مخالفان	34301168	style	context_dev
+الکترولیتی	الکترولیز	18488409	style	context_dev
+نامه‌های	نامه‌هایی	16903866	style	context_dev
+سرد	صرد	27572503	style	context_dev
+پایداری	پایایی	35742992	style	context_dev
+گونزالز	گونزالس	2444903	style	context_dev
+براهما	برهما	38719407	style	context_dev
+تورک	ترک	36612031	spelling	context_dev
+عملی	علمی	23804981	spelling	context_dev
+برسی	بررسی	43117580	spelling	context_dev
+یازدهم	شانزدهم	35951562	content	context_dev
+دانستند	دانست	11843024	style	context_dev
+ابدا	ابتدا	12324302	spelling	context_dev
+اشلی	شری	34259462	content	context_dev
+مشرکین	مشرکان	37944686	style	context_dev
+جی	جدید	4551639	spelling	context_dev
+مایر	میر	32306809	style	context_dev
+کنون	کنونی	16993153	grammar	context_dev
+اسلامبول	استامبول	17353294	spelling	context_dev
+موتزارت	موتسارت	16991457	style	context_dev
+اویل	اوایل	5835306	spelling	context_dev
+ارتدوکس	ارتدکس	14802434	style	context_dev
+گالن	گیلن	40449026	style	context_dev
+قران	قرآن	29407935	spelling	context_dev
+برا	برای	34670653	spelling	context_dev
+از	اثر	40252787	content	context_dev
+ذغال	زغال	21547911	spelling	context_dev
+سرخ	سبز	24451304	content	context_dev
+اعلی	اعلای	2458463	spelling	context_dev
+هایتز	هایتس	15588162	style	context_dev
+بالتی	بالتیک	31872607	spelling	context_dev
+روان‌شناختی	روان‌شناسی	13235950	style	context_dev
+زنگی	زندگی	11133979	spelling	context_dev
+گرفتم	گرفت	829652	grammar	context_dev
+یکشنبه	شنبه	36507977	content	context_dev
+تلوزیونی	تلویزیونی	32082851	style	context_dev
+ارایه	آرایه	556712	spelling	context_dev
+فعلیت	فعالیت	18610936	spelling	context_dev
+اعضا	اعضای	11753386	grammar	context_dev
+تولدی	تولید	37238587	spelling	context_dev
+ششده	شده	13321626	spelling	context_dev
+فریدریک	فریدریش	34583447	style	context_dev
+ییم	ییمه	14985072	spelling	context_dev
+برلی	برای	33812146	spelling	context_dev
+هایت	هایتس	15587970	style	context_dev
+فری	فرای	4474731	name	context_dev
+گی	گایا	28642471	spelling	context_dev
+هخامنشی	هخامنشیان	34241218	style	context_dev
+شاخصه	شاخص	23891269	spelling	context_dev
+شومن	شومان	17924953	name	context_dev
+نودا	نورا	16105285	spelling	context_dev
+گرسنه	گرسنگی	5585432	style	context_dev
+ند	اند	10468447	spelling	context_dev
+سالگی	سال	34632989	style	context_dev
+ن	نخو	34034684	spelling	context_dev
+جرأت	جرئت	42400482	variant	context_dev
+مارچ	مارس	36867236	name	context_dev
+آلکس	الکس	29795303	name	context_dev
+سابق	سابقه	1484054	spelling	context_dev
+فردی	فرد	31808862	grammar	context_dev
+کوهل	کول	35613723	name	context_dev
+مدین	مدیان	16942181	name	context_dev
+ایت	آیت	441740	spelling	context_dev
+دارو	دارد	35803570	spelling	context_dev
+لیف	لف	37725354	name	context_dev
+ترور	ترنر	26961822	name	context_dev
+کورد	کرد	21360963	grammar	context_dev
+انها	آن‌ها	33095505	spelling	context_dev
+زیان	زبان	15658672	spelling	context_dev
+بودند	شدند	41138078	grammar	context_dev
+حسین	حصین	37492939	name	context_dev
+طراز	تراز	30161258	style	context_dev
+لور	لر	10351124	name	context_dev
+گیگ	ژیگس	33317867	name	context_dev
+انها	آنها	28534142	spelling	context_dev
+هرمی	هرمس	14613473	name	context_dev
+درازی	دروزی	38196116	name	context_dev
+نسب	نسبت	34466559	spelling	context_dev
+دهیاری	دهداری	4817935	variant	context_dev
+غازان	غازیان	33592395	name	context_dev
+پیکچرز	فیچرز	32445022	name	context_dev
+کمان	کمون	21713776	variant	context_dev
+دریک	درک	37035268	name	context_dev
+لنگرگاه	لشگرگاه	19377159	spelling	context_dev
+ایم	این	30503924	spelling	context_dev
+جابجا	جابه‌جا	26582587	variant	context_dev
+درست	دست	18816512	spelling	context_dev
+عملی	علمی	26155353	spelling	context_dev
+آملی	املی	28108486	name	context_dev
+دام	دم	26215233	name	context_dev
+رودآوری	رودراوری	18437548	spelling	context_dev
+آزبرن	آزبورن	38633184	name	context_dev
+غنا	غنایی	41807528	name	context_dev
+آیه	آیت	28306030	spelling	context_dev
+ئ	و	10768233	spelling	context_dev
+میشن	میشوند	36688810	style	context_dev
+تات	تا	5570906	spelling	context_dev
+گرویده	گردیده	32022363	spelling	context_dev
+قساوت	قضاوت	35734741	spelling	context_dev
+حج	حاج	43464502	spelling	context_dev
+یاکوب	یاکوف	37114583	name	context_dev
+ربع	رابع	27699813	spelling	context_dev
+عمر	عمرو	3049951	name	context_dev
+لینکن	لینکلن	32761359	name	context_dev
+رونا	رانا	1992623	name	context_dev
+لوی	هالوی	36958248	spelling	context_dev
+صفویه	صفویان	6433115	style	context_dev
+آتش	آذر	2743181	variant	context_dev
+ارد	درد	5881326	spelling	context_dev
+نیاورد	اورد	40454454	grammar	context_dev
+م	می	32954025	spelling	context_dev
+خوانندگی	خواننده	34254761	variant	context_dev
+هست	است	35024865	variant	context_dev
+جان	جهان	2696169	spelling	context_dev
+ماروین	ماریون	18534704	name	context_dev
+جرأت	جرئت	43324055	variant	context_dev
+ر	و	28284868	spelling	context_dev
+روآندا	رواندا	23110151	name	context_dev
+نوول	ناول	41572184	name	context_dev
+سوس	سپس	40996769	spelling	context_dev
+کندز	کهندژ	30896030	name	context_dev
+هیاتی	هیئتی	17985517	variant	context_dev
+شوروی	شورایی	40984381	variant	context_dev
+می‌دهد	نمی‌دهد	43424985	content	context_dev
+شبکه‌ها	شبکه‌های	24295722	grammar	context_dev
+تامس	توماس	6924623	name	context_dev
+فرزند	فرزندش	38214327	grammar	context_dev
+درخواستی	درخواست	27780920	grammar	context_dev
+مربی	سرمربی	26556051	variant	context_dev
+روح	روان	44328732	style	context_dev
+دان	لدان	38076372	name	context_dev
+ترسید	ترسیدم	10502061	grammar	context_dev
+گاها	گاهی	33134768	grammar	context_dev
+اریتره	اریترا	6517022	name	context_dev
+ریچارد	ریشارد	29552894	name	context_dev
+اصلاح	اصلاحات	33905948	style	context_dev
+ماچ	ماک	11764887	name	context_dev
+درخواهد	درخواهند	39564445	grammar	context_dev
+نخورد	نخورده	12290956	spelling	context_dev
+هنری	هنک	27951947	name	context_dev
+رول	ران	25782395	name	context_dev
+ابی	آبی	25447679	spelling	context_dev
+خروج	خروجی	32764722	grammar	context_dev
+آفریقا	افریقا	64518	spelling	context_dev
+موتورهای	موتورها	23217845	grammar	context_dev
+مساله	مسئله	17914403	variant	context_dev
+قرا	قرار	33040997	spelling	context_dev
+کیف	کی‌یف	15805659	name	context_dev
+نمی‌خواهد	نمی‌خواهند	40315309	grammar	context_dev
+ریشار	ریچارد	18925674	name	context_dev
+برگذاری	برگزاری	5979793	spelling	context_dev
+اقبال	استقبال	39364191	content	context_dev
+ماده‌ی	ماده	1130716	grammar	context_dev
+اختلاف	اختلال	34359779	spelling	context_dev
+اطریش	اتریش	39038966	variant	context_dev
+ادبی	ادیبی	19303125	spelling	context_dev
+شروری	شوروی	967481	spelling	context_dev
+عباد	قباد	25655947	spelling	context_dev
+مهرابی	محرابی	30391923	spelling	context_dev
+امپراطور	امپراتور	39142361	variant	context_dev
+رنگی	رنگین	42313807	style	context_dev
+کرایف	کرویف	29012434	name	context_dev
+راشل	ریچل	32567503	name	context_dev
+گذاشته	گذاشت	18090639	grammar	context_dev
+الکی	الکلی	26885290	spelling	context_dev
+زیرزمین	زیرزمینی	28196565	grammar	context_dev
+هوا	حوا	38214504	spelling	context_dev
+سارگون	سارگن	30101196	name	context_dev
+خطای	خطا	8615256	grammar	context_dev
+توا	توان	6925649	spelling	context_dev
+دهه‌ی	دهه	102267	grammar	context_dev
+تو	دو	37254157	spelling	context_dev
+تعدای	تعدادی	27238232	spelling	context_dev
+زیرین	زبرین	34826114	content	context_dev
+خودرو	خودروی	17978961	grammar	context_dev
+عبرانی	عبری	5595570	spelling	context_dev
+نارسیسیم	نارسیسیسم	1473802	spelling	context_dev
+منیزیوم	منیزیم	34650739	spelling	context_dev
+لارس	لارش	13317188	name	context_dev
+برجسته‌ی	برجسته	29487809	grammar	context_dev
+شکور	کشور	16775972	spelling	context_dev
+عرض	معرض	6738872	spelling	context_dev
+تلوزیونی	تلویزیونی	31902478	variant	context_dev
+هست	است	25018119	grammar	context_dev
+روحی	روانی	26549398	content	context_dev
+مهران	بهرام	4020876	content	context_dev
+جیانی	جانی	23630292	name	context_dev
+ایزر	عزر	27481881	name	context_dev
+فریر	فریرا	11550235	name	context_dev
+محمودرضا	محمدرضا	32054277	name	context_dev
+پست‌ها	پست‌های	25387569	grammar	context_dev
+حرف	حرفه	26588536	spelling	context_dev
+کوچکتر	کوچکترین	26543093	spelling	context_dev
+یوتلاند	یولاند	23080777	name	context_dev
+انگستان	انگشتان	35089149	spelling	context_dev
+برسی	بررسی	34592202	spelling	context_dev
+ارگان	اورگن	11894499	name	context_dev
+مسأله	مسئله	17914053	variant	context_dev
+سکان	ساکنان	1379630	spelling	context_dev
+مایو	میو	44742675	name	context_dev
+دز	در	29738383	spelling	context_dev
+خواهد	نخواهد	32417183	content	context_dev
+الشعرا	الوزرا	38573181	content	context_dev
+مرکز	رومرکز	6428202	content	context_dev
+المان	آلمان	22981625	spelling	context_dev
+رسولی	ریدلی	29791872	name	context_dev
+آبخیز	آبریز	36020268	style	context_dev
+انبیای	انبیاء	34944320	variant	context_dev
+تری	پری	38949075	name	context_dev
+در	هر	198251	spelling	context_dev
+جبری	اجباری	24347208	content	context_dev
+زن	زنان	35774862	content	context_dev
+آنان	آنها	38481370	content	context_dev
+جابجا	جابه‌جا	44103101	variant	context_dev
+عزیزاله	عزیزالله	24339928	spelling	context_dev
+وو	و	1448650	spelling	context_dev
+عیلامیان	ایلامیان	36168502	spelling	context_dev
+نشده‌اند	نشده‌است	34991321	grammar	context_dev
+شوری	شوروی	26547863	spelling	context_dev
+ذغال	زغال	21669101	variant	context_dev
+گرگان	گروگان	3741233	spelling	context_dev
+آزد	آزاد	30273028	spelling	context_dev
+دیدیم	دیدم	5491812	grammar	context_dev

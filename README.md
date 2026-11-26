@@ -128,6 +128,9 @@ Shown as JSON; the file is gzipped TSV with these columns.
 * `summary_flagged`: how many of those edits had a summary mentioning spelling.
 * `reverse_edits`: how many edits went the other way, replacing `right` with `wrong`.
 * `wiki_freq_wrong`, `wiki_freq_right`: how often each word occurs in the current text of all articles.
+* `p_fix`: the estimated probability, from 0 to 1, that the pair fixes a spelling error (see
+  [Fitted confidence](#fitted-confidence)). Empty for `spacing` pairs.
+* `fix_tier`: `sure` when `p_fix` is at least 0.82, otherwise `unsure`. Empty for `spacing` pairs.
 
 ## How it was built
 
@@ -172,6 +175,38 @@ hold:
 Everything else is `low`. The `low` pairs still contain plenty of real errors, including
 real-word errors where a valid word was used in place of another. Those need the sentence to
 judge, which is what the `edits` config is for.
+
+### Fitted confidence
+
+`confidence` is a fixed rule. `p_fix` estimates the same thing with a model fitted to hand
+labels: the probability that the pair fixes a spelling error. No pair's `p_fix` is computed
+from its `confidence`. A logistic regression computes it from:
+
+* the counts above: `edits`, `pages`, `editors`, the share of edits with a flagged summary, the
+  share of reverse edits, the years between the first and last edit, and both frequencies;
+* how often each word occurs in a news corpus and in film subtitles;
+* whether each word is in a curated lexicon or only in a weaker one;
+* the size of the change: edit distance, word lengths, whether only dots differ, whether only
+  the hamza seat or a joined `به` differs;
+* for pairs whose edits Claude Sonnet 5.5 labelled (see
+  [Real-word errors in context](#real-word-errors-in-context)), the share labelled `spelling`;
+* two scores from a second model. Sonnet's labels cover 28,487 pairs. A gradient-boosted model
+  learned from them, using the inputs above plus which letters changed and where, what a
+  spelling fix and what a name change look like, and then scored every pair. Each pair is
+  scored by a copy of that model that saw neither its own Sonnet label nor any pair with the
+  same corrected word.
+
+The logistic regression was fitted on 726 hand-labelled pairs: the samples described under
+[Validation](#validation) and the 299 development edits of the context stage. Those samples
+took a larger share of some classes than of others, so its scores were then recalibrated
+with every labelled pair weighted by the number of pairs in the dataset it stands for. The
+weights are the only place where `confidence` enters: one sample was drawn from the `high`
+pairs.
+
+`fix_tier = sure` marks `p_fix ≥ 0.82`, the point where the tier is about as precise as
+`confidence = high`. 54,251 pairs are `sure` (46,747 `non_word`, 6,362 `context_dependent`,
+1,142 `disputed`), against 12,982 `high` pairs; 10,268 pairs are both. `spacing` pairs have
+neither column, because none was hand-labelled.
 
 ### Error type
 
@@ -297,6 +332,60 @@ the same samples with the same guideline; its agreement with the human annotator
 κ = 0.60 over the six labels on the 150 `p_spelling` test edits (0.64 for spelling against the
 rest), and κ = 0.59 on the stage 1 samples above.
 
+### `p_fix` and `fix_tier`
+
+`p_fix` was measured by 5-fold cross-validation on its 726 hand-labelled pairs, repeated 10
+times. Pairs with the same corrected word stayed in one fold, and each class counted in
+proportion to its size in the dataset. Recall is the share of all spelling fixes outside
+`spacing` that the row finds.
+
+| pairs | precision | bootstrap 95% interval | recall |
+|---|---:|---|---:|
+| `confidence = high` | 96% | | 15% |
+| `fix_tier = sure` (`p_fix ≥ 0.82`) | 95% | 92% to 98% | 67% |
+| `p_fix ≥ 0.5` | 88% | 84% to 92% | 84% |
+
+How often `p_fix ≥ 0.5` agrees with the hand label, next to always answering with the more
+common label of the class:
+
+| class | pairs labelled | `p_fix ≥ 0.5` | more common label |
+|---|---:|---:|---:|
+| `context_dependent` | 282 | 82% | 57% |
+| `non_word`, `low` tier | 102 | 89% | 83% |
+| `disputed` | 41 | 68% | 66% |
+| `unverified` | 38 | 90% | 89% |
+
+Only in `context_dependent` is the gain larger than these samples can resolve. In the other
+classes use `p_fix` to rank pairs, not to decide single ones.
+
+`p_fix` can be read as a probability. In the same cross-validation, the share of pairs that
+are spelling fixes was:
+
+| `p_fix` | spelling fixes |
+|---|---:|
+| under 0.1 | 9% |
+| 0.1 to 0.3 | 16% |
+| 0.3 to 0.5 | 34% |
+| 0.5 to 0.7 | 64% |
+| 0.7 to 0.82 | 71% |
+| 0.82 to 0.9 | 84% |
+| 0.9 and over | 98% |
+
+Each row but the last rests on 40 to 150 labelled pairs, so the shares are rough.
+
+A second check used pairs the model never saw: the 137 pairs of the 150-edit test sheet of
+[Real-word errors in context](#real-word-errors-in-context), 61 of them spelling fixes.
+
+| pairs | picked | spelling fixes | precision | Wilson 95% interval | recall |
+|---|---:|---:|---:|---|---:|
+| `fix_tier = sure` | 37 | 36 | 97% | 86% to 99.5% | 59% |
+| `p_fix ≥ 0.5` | 50 | 43 | 86% | 74% to 93% | 70% |
+| most of the pair's `sonnet_label`s are `spelling` | 47 | 43 | 91% | 80% to 97% | 70% |
+
+For a yes-or-no answer on a `context_dependent` pair, Sonnet's label alone is at least as good
+as `p_fix ≥ 0.5`. `p_fix` orders these pairs better (average precision 0.86 against 0.79) and
+also covers the 120,000 pairs outside `spacing` that Sonnet did not label.
+
 ## Limitations
 
 Wikipedia is formal, encyclopedic writing. Mistakes typical of chat or phone keyboards, and
@@ -355,6 +444,21 @@ The hand labels behind the classifier are in `annotation/context_labels_dev.tsv`
 used to fit it) and `annotation/context_labels_test.tsv` (150 edits, used only to test it,
 with Claude Sonnet 5.5's labels alongside); Sonnet's labels of all scored edits are in
 `annotation/context_sonnet_labels.tsv`.
+
+`p_fix` and `fix_tier` need `pip install scikit-learn` and word counts from two other corpora,
+the Leipzig Persian news crawls and the OpenSubtitles Persian text:
+
+```sh
+scripts/fetch_corpora.sh               # 740 MB into data/raw/
+python -m fadict.count                 # counts their words into data/work/
+python -m fadict.confidence annotate   # adds p_fix and fix_tier to dist/fawiki_typos/pairs/
+python -m fadict.confidence heldout    # the check on the 137 unseen pairs
+python -m fadict.confidence check      # pairs where fix_tier contradicts the edit counts
+```
+
+`scripts/bench_confidence.py` runs the cross-validation.
+
+The 726 hand labels are in `annotation/pair_labels.tsv`.
 
 ## Citation
 
